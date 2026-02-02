@@ -1,0 +1,47 @@
+{
+  "solve": {
+    "verbose": 1,
+    "output": "./instances/performances/",
+    "methods": [
+      {
+        "name": "BeamSearch",
+        "verbose": 2,
+        "beamSize": 50,
+        "timeLimits": 30,
+        "recovering": true,
+        "reco-strategy": "local-search",
+        "nbSolutionForMSLS": 1000,
+        "version": 3,
+        "LocalSearch_parameters": {
+          "name": "LocalSearch",
+          "version": 5,
+          "useBestNeighbor": true,
+          "timeLimits": 30,
+          "maxIter": 50
+        },
+        "alpha": 0.0,
+        "instances": [
+          {"path": "./instances/test/instance0_n_8_N_16_tf_1.0_rdd_1.0_mMax_1_m0_1_Vmax_2.0_V0_1.0.txt"},
+          {"path": "./instances/test/instance1_n_8_N_16_tf_1.0_rdd_1.0_mMax_1_m0_1_Vmax_2.0_V0_1.0.txt"}
+        ]
+      },
+      {
+        "name": "LocalSearch",
+        "verbose": 2,
+        "timeLimits": 30,
+        "version": 9,
+        "useBestNeighbor": true,
+        "maxIter": 50,
+        "genDatabase": true,
+        "ratioNeighbor": 0.15,
+        "nbPrediction": 10,
+        "batchSize": 256,
+        "predictor": "./script/Predictor/predictor.pt",
+        "instances": [
+          {"path": "./instances/test/instance0_n_8_N_16_tf_1.0_rdd_1.0_mMax_1_m0_1_Vmax_2.0_V0_1.0.txt"},
+          {"path": "./instances/test/instance1_n_8_N_16_tf_1.0_rdd_1.0_mMax_1_m0_1_Vmax_2.0_V0_1.0.txt"}
+        ]
+      }
+    ]
+  }
+}

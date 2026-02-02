@@ -1,0 +1,32 @@
+{
+  "generate": {
+    "seed": 1,
+    "instances": [
+      {
+        "basePath": "./instances/test/",
+        "numberInstance": 2,
+        "paramInstance": {
+          "noIdenticalJobs": false,
+          "n": 8,
+          "N": 16,
+          "M_max": 1,
+          "M_0": 1,
+          "V_max": 2.0,
+          "V_0": 1.0,
+          "pi": {
+            "inf": 1,
+            "sup": 10
+          },
+          "di": {
+            "TF": 1.0,
+            "RDD": 1.0
+          },
+          "wi": {
+            "inf": 1,
+            "sup": 20
+          }
+        }
+      }
+    ]
+  }
+}

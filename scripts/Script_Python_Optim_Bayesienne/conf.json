@@ -1,0 +1,62 @@
+{
+  "bayesian optimization parameters": {
+    "Algorithm": "../../bin/Release/bilevel-scheduling",
+    "AlgorithmResFile": "AlgoResults",
+    "AlgRepetitions": 1,
+    "MinNumJob": 40,
+    "MaxNumJob": 80,
+    "StepNumJob": 10,
+    "TrainDataDirectory": "TrainInstances",
+    "TrainResDirectory": "TrainResults",
+    "TrainNumInst": 3750,
+    "TrainNumInstpJob": 750,
+    "ValidDataDirectory": "ValidInstances",
+    "ValidResDirectory": "ValidResults",
+    "ValidNumInst": 3750,
+    "ValidNumInstpJob": 750,
+    "number of init points": 0,
+    "number of iterations": 2,
+    "allow_duplicate_points": false,
+    "acquisition function": "ucb",
+    "kappa": 2.56,
+    "kappa_decay": 1,
+    "kappa_decay_delay": 0,
+    "xi": 0
+  },
+  "probe": {"points": []},
+  "hyperparameters": {
+    "alpha1": {
+      "min": -0.2,
+      "max": -0.06
+    },
+    "alpha2": {
+      "min": 4,
+      "max": 8
+    },
+    "alpha3": {
+      "min": 0,
+      "max": 1
+    },
+    "alpha4": {
+      "min": 0,
+      "max": 20,
+      "isInteger": true
+    },
+    "alpha5": {
+      "min": -0.0125,
+      "max": 0.0125
+    },
+    "alpha6": {
+      "min": -0.016,
+      "max": 0.016
+    },
+    "alpha7": {
+      "min": -0.25,
+      "max": 0.25
+    },
+    "alpha8": {
+      "min": 0,
+      "max": 1.0
+    }
+  }
+}
