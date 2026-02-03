@@ -22,20 +22,20 @@
 #
 
 # Define the range of values for the variables
-nbInstGen=1
+nbInstGen=10
 methods=("BeamSearch")
 strategies=("local-search")
 alphas=(0.0 0.1)
-versions=(1 2 3 4 5)
+versions=(1 3)
 versionLS=1
 bestImprove=0
-n_values=(40)
-frac_n=(0.25 0.5)
+n_values=(40 50 60 70 80)
+frac_n=(0.25 0.5 0.75)
 timeLimit=60
 timeLimitLS=300
 beamSizes=(1)
-recovering=(0 1)
-nbSolutionForMSLS=1
+recovering=(1)
+nbSolutionForMSLS=1000
 autoSetting=1 # use auto setting in MSLS
 # Get the absolute directory of the script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
