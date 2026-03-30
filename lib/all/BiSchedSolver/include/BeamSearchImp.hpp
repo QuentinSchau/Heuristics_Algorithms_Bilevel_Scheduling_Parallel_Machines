@@ -25,9 +25,6 @@
 #define BILEVEL_SCHEDULING_BEAMSEARCH_IMP_H
 
 inline BeamSearch::BeamSearchNode BeamSearch::evaluation(Node &&node) {
-    if (node.id==24) {
-        Solution::printB(node.getBlockStruc());
-    }
     isWithinTimeLimit();
     // compute an upper bound
     // Get the list of available job, i.e. job that have not been scheduled or removed, to compute upper bound
