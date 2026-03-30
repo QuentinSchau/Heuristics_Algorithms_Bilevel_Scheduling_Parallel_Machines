@@ -55,6 +55,8 @@ Scripts:
 * The `createInstance.sh` Bash script creates instances with customizable settings, allowing you to modify variables such as values.
 * The `createConfigFiles.sh` Bash script creates configuration JSON file with customizable settings, allowing you to modify variables such as values.
 * The `runInstances.sh` script runs instances locally.
+* The `CreateDatabase.py` script scans folders containing instance files (i.e. /instances/N*/) and CSV results files, it concatenates CSVs by method, and then copies and renames each instance into separate training and validation directories while generating corresponding .seq files containing the objective value and execution time from the CSVs. Essentially, it organizes raw instance data and their results into structured datasets suitable for Bayesian Optimization.
+* The `OptimParam.py` script runs Bayesian Optimization with the configuration file 'conf.json'. You can add your points that will be considered through "probe" and its "points" list.
 
 
 ## Specification

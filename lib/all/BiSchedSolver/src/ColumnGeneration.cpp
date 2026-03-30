@@ -85,12 +85,6 @@ void ColumnGeneration::setParameters(nlohmann::json &object) {
                     throw std::invalid_argument(
                             R"(The attribute "maxNbCallHeuristic" of JSON object must be an "positive integer" value for the constructor of CG solver)");
             }
-            if (object.contains("nbStateDP")) {
-                if (object["nbStateDP"].is_number_integer())setMaxNbCallHeuristic(object["nbStateDP"].template get<char>());
-                else
-                    throw std::invalid_argument(
-                            R"(The attribute "maxNbCallHeuristic" of JSON object must be an "positive integer" value for the constructor of CG solver)");
-            }
             if (object.contains("timeLimits")) {
                 if (object["timeLimits"].is_number_unsigned()) setTimeLimit(object["timeLimits"]);
                 else

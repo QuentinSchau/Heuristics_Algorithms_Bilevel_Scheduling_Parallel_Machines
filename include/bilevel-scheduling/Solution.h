@@ -458,9 +458,10 @@ public:
     bool feasible(Instance *instance) {
         bool isFeasible = true;
         auto listJobFromSol = extractListOfJobs();
-        std::set<Job> setJobsUseInSol(listJobFromSol.begin(), listJobFromSol.end());
+        std::sort(listJobFromSol.begin(), listJobFromSol.end() );
+        listJobFromSol.erase( std::unique( listJobFromSol.begin(), listJobFromSol.end() ), listJobFromSol.end() );
         // must have n distinct jobs
-        if (setJobsUseInSol.size() != instance->getNbToSelectJob()) return false;
+        if (listJobFromSol.size() != instance->getNbToSelectJob()) return false;
         // check if the number of scheduled jobs is equal to the number of selected jobs
         if (nbScheduledJobs != instance->getNbToSelectJob()) return false;
         //check if all machines have enough and not more jobs for respect block structure
@@ -528,15 +529,16 @@ public:
      */
     void explainInfeasibility(Instance *instance) {
         auto listJobFromSol = extractListOfJobs();
-        std::set<Job> setJobsUseInSol(listJobFromSol.begin(), listJobFromSol.end());
+        std::sort(listJobFromSol.begin(), listJobFromSol.end() );
+        listJobFromSol.erase( std::unique( listJobFromSol.begin(), listJobFromSol.end() ), listJobFromSol.end() );
         // must have n distinct jobs
-        if (setJobsUseInSol.size() != instance->getNbToSelectJob()) {
-            std::cerr << setJobsUseInSol.size() << " distinct jobs was scheduled instead of " << instance->getNbToSelectJob() << " . There is same jobs in the solution" << std::endl;
+        if (listJobFromSol.size() != instance->getNbToSelectJob()) {
+            std::cerr << listJobFromSol.size() << " distinct jobs was scheduled instead of " << instance->getNbToSelectJob() << " . There is same jobs in the solution" << std::endl;
             return;
         }
         // check if the number of scheduled jobs is equal to the number of selected jobs
         if (nbScheduledJobs != instance->getNbToSelectJob()) {
-            std::cerr << setJobsUseInSol.size() << " jobs was scheduled instead of " << instance->getNbToSelectJob() << "" << std::endl;
+            std::cerr << nbScheduledJobs << " jobs was scheduled instead of " << instance->getNbToSelectJob() << "" << std::endl;
             return;
         }
         //check if all machines have enough and not more jobs for respect block structure

@@ -269,7 +269,7 @@ inline void Heuristic::computeCostMatrixWithUnchangedMachines(Solution::BlockStr
             double costSchedule = (indexBlock > 0) ? costAtEachBlock[indexMachine][indexBlock - 1] : 0.0;
 
             // add the cost of the job if is late
-            double costJob = isSmallerOrEqual(job.getDi(),completionTime) ? job.getWi() : 0.0;
+            double costJob = isSmaller(job.getDi(),completionTime) ? job.getWi() : 0.0;
             costSchedule += costJob;
 
             // compute the cost of the machine schedule because we change the completion time of other next blocks
@@ -345,7 +345,7 @@ inline void Heuristic::freeAndAssignmentBlock(Solution::BlockStructure &blockStr
             listOfJobsAvailable->push_back(*blockStruct[indexMachine][indexBlockInStruct].first);
         blockStruct[indexMachine][indexBlockInStruct] = {nullptr, 0.0};
     }
-    // apply the new assigment
+    // apply the new assignment
     for (unsigned int indexLoopMachine = 0; indexLoopMachine < E[indexBlock].size(); indexLoopMachine++) {
         isWithinTimeLimit();
         auto [indexMachine, indexBlockInStruct] = E[indexBlock][indexLoopMachine];

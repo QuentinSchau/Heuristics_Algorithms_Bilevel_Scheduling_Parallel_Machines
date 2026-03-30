@@ -4,7 +4,7 @@
     "AlgorithmResFile": "AlgoResults",
     "AlgRepetitions": 1,
     "MinNumJob": 40,
-    "MaxNumJob": 80,
+    "MaxNumJob": 100,
     "StepNumJob": 10,
     "TrainDataDirectory": "TrainInstances",
     "TrainResDirectory": "TrainResults",
