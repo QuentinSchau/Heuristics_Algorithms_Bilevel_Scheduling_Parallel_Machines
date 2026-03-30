@@ -227,13 +227,13 @@ def main(args):
                         m = (mMax + M0)
                         W = max(math.floor(math.exp(-0.07675*N+7.74967)),1) if (nbSolutionForMSLS > 0) else math.floor(math.exp(-0.187*N+5.267)+0.302*m) + 1
                         K = 1000
-                        TLS = math.ceil( 0.5*60)
+                        TLS = math.ceil( 0.5*timeLimit)
                         alpha = min(-0.00057*N-0.01201*n+0.15115*m+0.46270,1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
                         configSolve["solve"]["methods"].append({
                             "name": "BeamSearch",
                             "verbose": verbose,
                             "beamSize": W if autoSetting else beamSize,
-                            "timeLimits": 60 - TLS if (nbSolutionForMSLS > 0 and autoSetting) else timeLimit,
+                            "timeLimits": timeLimit - TLS if (nbSolutionForMSLS > 0 and autoSetting) else timeLimit,
                             "recovering": recovering==1,
                             "reco-strategy": recoStrategy,
                             "nbSolutionForMSLS": K if (nbSolutionForMSLS > 0 and autoSetting) else nbSolutionForMSLS,
