@@ -121,7 +121,7 @@ public:
         const auto endSolve{std::chrono::steady_clock::now()};
         time_elapsed = std::chrono::duration<double>{endSolve - start};
         stopTimerThread();    // safely join timer thread
-        if (verbose >=2) std::cout << nameMethod.c_str() << " is over after " << time_elapsed.count() << " seconds" << std::endl;
+        if (verbose >=1) std::cout << nameMethod.c_str() << " is over after " << time_elapsed.count() << " seconds" << std::endl;
     }
 
     /**

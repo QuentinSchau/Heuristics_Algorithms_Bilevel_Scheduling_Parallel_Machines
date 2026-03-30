@@ -115,19 +115,16 @@ public:
      */
     void computeCostMatrixWithUnchangedMachines(Solution::BlockStructure &blockStruct, unsigned int indexBlock, const std::vector<unsigned int> *listIndexUnchangedMachines,int numJobsToScheduleOnBlock = -1);
 
-    void computeCostMatrixWithUnchangedMachinesV1(Solution::BlockStructure &blockStruct, unsigned int indexBlock, const std::vector<unsigned int> *listIndexUnchangedMachines,int numJobsToScheduleOnBlock = -1);
-
     /**
      * Method that releases jobs in a block and tries to assign new jobs using an assignment problem.
      * @param blockStruct The block structure from where we release jobs.
      * @param indexBlock The index of the block to release.
-     * @param listJobsAvailable The list of available jobs from which we try to fill the released block. The method change this list at this end, by removing the jobs that have been assigned.
+     * @param listOfJobsAvailable The list of available jobs from which we try to fill the released block. The method change this list at this end, by removing the jobs that have been assigned.
      * @param listIndexUnchangedMachines The list of indices of machines from which we don't free the job on it (machines to avoid).
      * @param numJobsToScheduleOnBlock The number of job to schedule in the block, by default is -1 meaning all jobs in the block
      */
     void freeAndAssignmentBlock(Solution::BlockStructure &blockStruct, unsigned int indexBlock, std::vector<Job> *listOfJobsAvailable,const std::vector<unsigned int> *listIndexUnchangedMachines = nullptr, int numJobsToScheduleOnBlock = -1);
 
-    void freeAndAssignmentBlockV1(Solution::BlockStructure &blockStruct, unsigned int indexBlock, std::vector<Job> *listOfJobsAvailable,const std::vector<unsigned int> *listIndexUnchangedMachines = nullptr, int numJobsToScheduleOnBlock = -1);
 
     /**
      * Method that upgrade the solution given in parameter with heuristic.
@@ -250,68 +247,6 @@ inline double Heuristic::changeWeightWithEpsilon(unsigned int i, unsigned int j)
     return epsilon;
 }
 
-// inline void Heuristic::computeCostMatrixWithUnchangedMachines(Solution::BlockStructure &blockStruct, unsigned int indexBlock, const std::vector<unsigned int> *listIndexUnchangedMachines,int numJobsToScheduleOnBlock) {
-//     clearCostMatrix();
-//     auto &E = instance->getE();
-//     //compute the matrix of cost
-//     for (auto &[indexMachine, indexBlockInStruct]: E[indexBlock]) {
-//         if (listIndexUnchangedMachines != nullptr && std::find(listIndexUnchangedMachines->begin(), listIndexUnchangedMachines->end(), indexMachine) != listIndexUnchangedMachines->end()) continue;
-//         double speed = (indexMachine < instance->getNbOfHighSpeedMachines()) ? instance->getHighSpeed() : instance->getLowSpeed();
-//         std::vector<double> &costOfMachine = costMatrix[indexMachine]; // the cost of the machine starting from indexBlock
-//
-//         // loop over each jobs
-//         for (unsigned int indexJob: listAvailableIndexJob) {
-//             // get the completion time of the location before
-//             double completionTime = (indexBlockInStruct == 0) ? 0.0 : blockStruct[indexMachine][indexBlockInStruct - 1].second;
-//             // adjust the completion time with the current job
-//             auto &job = instance->getListJobs()[indexJob];
-//             completionTime += job.getPi() / speed;
-//
-//             // initiate the cost of schedule with the sum of costs in the previous blocks.
-//             double costSchedule = (indexBlock > 0) ? costAtEachBlock[indexMachine][indexBlock - 1] : 0.0;
-//
-//             // add the cost of the job if is late
-//             double costJob = isSmallerOrEqual(job.getDi(),completionTime) ? job.getWi() : 0.0;
-//             costSchedule += costJob;
-//             // compute the cost of the machine schedule because we change the completion time of other next blocks
-//             // So loop over the next block
-//             unsigned int indexNextBlock = indexBlock + 1;
-//             auto predFindIndexMachine = [&indexMachine](std::pair<unsigned int, unsigned int> locationInBlock) { return locationInBlock.first == indexMachine; };
-//             while (indexNextBlock < E.size()) {
-//                 // if a job is schedule on the machine in the next block
-//                 if (std::find_if(E[indexNextBlock].begin(), E[indexNextBlock].end(), predFindIndexMachine) != E[indexNextBlock].end()) {
-//                     auto &[_, indexNextBlockInStruct] = E[indexNextBlock][indexMachine];
-//                     auto nextJob = blockStruct[indexMachine][indexNextBlockInStruct].first;
-//                     if (nextJob != nullptr) {
-//                         completionTime += nextJob->getPi() / speed;
-//                         costJob = (nextJob->getDi() < completionTime) ? nextJob->getWi() : 0.0;
-//                         costSchedule += costJob;
-//                     }
-//                 }
-//                 ++indexNextBlock;
-//             }
-//             costOfMachine[indexJob] = costSchedule;
-//             // if we are in the first block or if we have to not fulfill a block, we shift the cost by +1 because the cost 0 is reserved for dummy machines
-//             if (indexBlock == 0 || numJobsToScheduleOnBlock >= 0) costOfMachine[indexJob] += 1;
-//         }
-//         // if we are in the first block, we have to select k machines among m, so we create m-k dummy jobs with weight 0.0, such as we will have k assignments with weights non-negative
-//         if (indexBlock == 0 || numJobsToScheduleOnBlock >= 0) {
-//             // the number of jobs that must be scheduled on the block
-//             if (indexBlock == 0 && numJobsToScheduleOnBlock == -1) numJobsToScheduleOnBlock = (int) instance->getNbJobsToScheduleOnFirstBlock();
-//             int nbMachineInBlock = static_cast<int>(E[indexBlock].size()); // the number of machines in the block
-//             assert(nbMachineInBlock >= numJobsToScheduleOnBlock);
-//             for (int indexDummyJob = 0; indexDummyJob < nbMachineInBlock - numJobsToScheduleOnBlock; indexDummyJob++) {
-//                 assert(instance->getNbJobs() + indexDummyJob < costOfMachine.size());
-//                 costOfMachine[instance->getNbJobs() + indexDummyJob] = 0.0;
-//             }
-//         }
-//         // apply small difference on each cost in order to take the smallest jobs when equal weight appear
-//         for (unsigned int indexLoopWeight = 0; indexLoopWeight < costOfMachine.size(); indexLoopWeight++) {
-//             costOfMachine[indexLoopWeight] += static_cast<double>(indexLoopWeight)/static_cast<double>(costOfMachine.size());
-//         }
-//     }
-// }
-
 inline void Heuristic::computeCostMatrixWithUnchangedMachines(Solution::BlockStructure &blockStruct, unsigned int indexBlock, const std::vector<unsigned int> *listIndexUnchangedMachines,int numJobsToScheduleOnBlock) {
     clearCostMatrix();
     auto &E = instance->getE();
@@ -331,12 +266,12 @@ inline void Heuristic::computeCostMatrixWithUnchangedMachines(Solution::BlockStr
             auto &job = instance->getListJobs()[listAvailableIndexJob[indexLoopJob]];
             completionTime += job.getPi() / speed;
 
-            // initiate the cost of schedule with the sum of costs in the previous blocks.
-            double costSchedule = (indexBlock > 0) ? costAtEachBlock[indexLoopMachine][indexBlock - 1] : 0.0;
+            double costSchedule = (indexBlock > 0) ? costAtEachBlock[indexMachine][indexBlock - 1] : 0.0;
 
             // add the cost of the job if is late
             double costJob = isSmallerOrEqual(job.getDi(),completionTime) ? job.getWi() : 0.0;
             costSchedule += costJob;
+
             // compute the cost of the machine schedule because we change the completion time of other next blocks
             // So loop over the next block
             unsigned int indexNextBlock = indexBlock + 1;
@@ -377,76 +312,6 @@ inline void Heuristic::computeCostMatrixWithUnchangedMachines(Solution::BlockStr
     }
 }
 
-// inline void Heuristic::freeAndAssignmentBlock(Solution::BlockStructure &blockStruct, unsigned int indexBlock, std::vector<Job> *listOfJobsAvailable,const std::vector<unsigned int> *listIndexUnchangedMachines, int numJobsToScheduleOnBlock) {
-//     auto copyBlock= blockStruct;
-//     auto copyListAvailJob = (*listOfJobsAvailable);
-//     computeAllWeightsAtEachBlock(blockStruct);
-//     auto &E = instance->getE();
-//
-//     //compute the jobs that can be schedule in the released block
-//     computeListJobsCanBeScheduleInBlock(blockStruct, indexBlock, listOfJobsAvailable,listIndexUnchangedMachines);
-//
-//     //compute the cost matrix
-//     computeCostMatrixWithUnchangedMachines(blockStruct, indexBlock, listIndexUnchangedMachines,numJobsToScheduleOnBlock);
-//
-//     std::vector<int> assignment;
-//     auto H = HungarianAlgorithm();
-//     H.Solve(costMatrix, assignment);
-//
-//     // free the block
-//     for (auto &[indexMachine, indexBlockInStruct]: E[indexBlock]) {
-//         // if the machine is unchanged then continue
-//         if (listIndexUnchangedMachines != nullptr && std::find(listIndexUnchangedMachines->begin(), listIndexUnchangedMachines->end(),indexMachine)!= listIndexUnchangedMachines->end()) continue;
-//         // add the job to the list of available jobs. The job will be removed if it is again assigned
-//         if (blockStruct[indexMachine][indexBlockInStruct].first != nullptr && listOfJobsAvailable != nullptr)
-//             listOfJobsAvailable->push_back(*blockStruct[indexMachine][indexBlockInStruct].first);
-//         blockStruct[indexMachine][indexBlockInStruct] = {nullptr, 0.0};
-//     }
-//     // apply the new assigment
-//     for (unsigned int indexMachine = 0; indexMachine < E[indexBlock].size(); indexMachine++) {
-//         if (listIndexUnchangedMachines != nullptr && std::find(listIndexUnchangedMachines->begin(), listIndexUnchangedMachines->end(),indexMachine)!= listIndexUnchangedMachines->end()) continue;
-//         auto [_, indexBlockInStruct] = E[indexBlock][indexMachine];
-//         unsigned int indexAssignJob = assignment[indexMachine];
-//         // if the index of assign jobs is greater or equal to N, that means it's a dummy jobs, so we can pass to the next machines because we have to select fewer machines
-//         if (indexAssignJob >= instance->getNbJobs()) {
-//             assert(indexBlock == 0 || numJobsToScheduleOnBlock >= 0); // check we are in first block
-//             continue;
-//         }
-//         blockStruct[indexMachine][indexBlockInStruct].first = &instance->getListJobs()[indexAssignJob];
-//         // update the completion time of the structure and for the next block
-//         double completionTime = (indexBlockInStruct == 0) ? 0.0 : blockStruct[indexMachine][indexBlockInStruct - 1].second;
-//         double speed = (indexMachine < instance->getNbOfHighSpeedMachines()) ? instance->getHighSpeed() : instance->getLowSpeed();
-//         unsigned int indexNextBlock = indexBlock;
-//         while (indexNextBlock < E.size()) {
-//             // if a job is schedule on the machine in the next block
-//             if (indexMachine < E[indexNextBlock].size()) {
-//                 auto &[_d, indexNextBlockInStruct] = E[indexNextBlock][indexMachine];
-//                 auto nextJob = blockStruct[indexMachine][indexNextBlockInStruct].first;
-//                 if (nextJob != nullptr) {
-//                     completionTime += nextJob->getPi() / speed;
-//                     blockStruct[indexMachine][indexNextBlockInStruct].second = completionTime;
-//                 }
-//             }
-//             ++indexNextBlock;
-//         }
-//     }
-//     // remove assigned jobs from the list of available jobs
-//     if (listOfJobsAvailable != nullptr) {
-//         for (unsigned int indexMachine = 0; indexMachine < E[indexBlock].size(); indexMachine++) {
-//             if (listIndexUnchangedMachines != nullptr && std::find(listIndexUnchangedMachines->begin(), listIndexUnchangedMachines->end(), indexMachine) != listIndexUnchangedMachines->end()) continue;
-//             unsigned int indexAssignJob = assignment[indexMachine];
-//             auto itRemovedAssignedJob = std::remove_if(listOfJobsAvailable->begin(), listOfJobsAvailable->end(), [indexAssignJob](Job &job) {return job.getIndex() == indexAssignJob;});
-//             listOfJobsAvailable->erase(itRemovedAssignedJob, listOfJobsAvailable->end());
-//         }
-//     }
-//     freeAndAssignmentBlockV1(copyBlock,indexBlock,&copyListAvailJob,listIndexUnchangedMachines,numJobsToScheduleOnBlock);
-//     if (copyBlock != blockStruct) {
-//         Solution::printB(copyBlock);
-//         std::cout << std::endl;
-//         Solution::printB(blockStruct);
-//     }
-//
-// }
 
 inline void Heuristic::freeAndAssignmentBlock(Solution::BlockStructure &blockStruct, unsigned int indexBlock, std::vector<Job> *listOfJobsAvailable,const std::vector<unsigned int> *listIndexUnchangedMachines, int numJobsToScheduleOnBlock) {
 
@@ -527,7 +392,6 @@ inline void Heuristic::freeAndAssignmentBlock(Solution::BlockStructure &blockStr
             listOfJobsAvailable->erase(itRemovedAssignedJob, listOfJobsAvailable->end());
         }
     }
-
 }
 
 inline void Heuristic::upgradeSolutionWithHeuristic(Solution &sol, const std::vector<Job> &listJobsAvailable,bool leftToRight) {

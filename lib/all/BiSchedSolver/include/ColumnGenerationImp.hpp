@@ -1615,7 +1615,7 @@ inline void ColumnGeneration::solve(Node &node) {
                 if (isSmaller(optValueRMP - lowerBound, 1)) {
                     // since we are interested in the wj Uj value, which is an integer, then if UB - LB < 1 then we take LB = floor(UB)
                     // where U is the value of weighted sum of tardy jobs of the restricted master problem. Here, we add epsilon to avoid floating representation error
-                    lowerBound = std::floor(cplex.getValue(U)+EPSILON);
+                    lowerBound = std::ceil(lowerBound);
                     break;
                 }
 
