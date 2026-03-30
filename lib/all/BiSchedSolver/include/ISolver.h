@@ -187,16 +187,16 @@ public:
                             indicesOfJobsTemporaryWaiting.erase(itRemove,indicesOfJobsTemporaryWaiting.end());
                             speed = itCompletionTime->second.first < instance->getNbOfHighSpeedMachines() ? instance->getHighSpeed() : instance->getLowSpeed();
                             // add the job that can be schedule in the queue
-                            // use remove_if to swap the job that can be put in queueEarlyJob at the end of the list
-                            auto itRemovedJobInWaitingList = std::remove_if(indicesOfJobsTemporaryWaiting.begin(), indicesOfJobsTemporaryWaiting.end(),
-                                [&itCompletionTime,&speed](auto& job)
-                                { return isSmallerOrEqual(itCompletionTime->first, job->getDi()) && isSmallerOrEqual(job->getPi() / speed, itCompletionTime->first); });
+                            // use partition to swap the job that can be put in queueEarlyJob at the end of the list
+                            auto itFirstEarly = std::partition(indicesOfJobsTemporaryWaiting.begin(),indicesOfJobsTemporaryWaiting.end(),[&](auto const& job)
+                                {return !(isSmallerOrEqual(itCompletionTime->first, job->getDi()) && isSmallerOrEqual(job->getPi() / speed, itCompletionTime->first));});
+
                             // add the early job that are at the end of the list to queueEarlyJob
-                            for (auto itLoopWaitingJob = itRemovedJobInWaitingList; itLoopWaitingJob != indicesOfJobsTemporaryWaiting.end(); itLoopWaitingJob++){
+                            for (auto itLoopWaitingJob = itFirstEarly; itLoopWaitingJob != indicesOfJobsTemporaryWaiting.end(); itLoopWaitingJob++){
                                 queueEarlyJob.emplace(std::make_pair(-(*itLoopWaitingJob)->getPi(),(*itLoopWaitingJob)->getWi()), (*itLoopWaitingJob));
                             }
                             // then remove the early job from the list of waiting job
-                            indicesOfJobsTemporaryWaiting.erase(itRemovedJobInWaitingList, indicesOfJobsTemporaryWaiting.end());
+                            indicesOfJobsTemporaryWaiting.erase(itFirstEarly, indicesOfJobsTemporaryWaiting.end());
                         }
                         --numberElementToAdd;
                     } else {
@@ -209,16 +209,16 @@ public:
                             indicesOfJobsTemporaryWaiting.erase(itRemove,indicesOfJobsTemporaryWaiting.end());
                             speed = itCompletionTime->second.first < instance->getNbOfHighSpeedMachines() ? instance->getHighSpeed() : instance->getLowSpeed();
                             // add the job that can be schedule in the queue
-                            // use remove_if to swap the job that can be put in queueEarlyJob at the end of the list
-                            auto itRemovedJobInWaitingList = std::remove_if(indicesOfJobsTemporaryWaiting.begin(), indicesOfJobsTemporaryWaiting.end(),
-                                [&itCompletionTime,&speed](auto& job)
-                                { return isSmallerOrEqual(itCompletionTime->first, job->getDi()) && isSmallerOrEqual(job->getPi() / speed, itCompletionTime->first); });
+                            // use partition to swap the job that can be put in queueEarlyJob at the end of the list
+                            auto itFirstEarly = std::partition(indicesOfJobsTemporaryWaiting.begin(),indicesOfJobsTemporaryWaiting.end(),[&](auto const& job)
+                                {return !(isSmallerOrEqual(itCompletionTime->first, job->getDi()) && isSmallerOrEqual(job->getPi() / speed, itCompletionTime->first));});
+
                             // add the early job that are at the end of the list to queueEarlyJob
-                            for (auto itLoopWaitingJob = itRemovedJobInWaitingList; itLoopWaitingJob != indicesOfJobsTemporaryWaiting.end(); itLoopWaitingJob++){
+                            for (auto itLoopWaitingJob = itFirstEarly; itLoopWaitingJob != indicesOfJobsTemporaryWaiting.end(); itLoopWaitingJob++){
                                 queueEarlyJob.emplace(std::make_pair(-(*itLoopWaitingJob)->getPi(),(*itLoopWaitingJob)->getWi()), (*itLoopWaitingJob));
                             }
                             // then remove the early job from the list of waiting job
-                            indicesOfJobsTemporaryWaiting.erase(itRemovedJobInWaitingList, indicesOfJobsTemporaryWaiting.end());
+                            indicesOfJobsTemporaryWaiting.erase(itFirstEarly, indicesOfJobsTemporaryWaiting.end());
                         }
                     }
                 }else {

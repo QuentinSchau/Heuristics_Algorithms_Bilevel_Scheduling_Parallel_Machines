@@ -25,6 +25,9 @@
 #define BILEVEL_SCHEDULING_BEAMSEARCH_IMP_H
 
 inline BeamSearch::BeamSearchNode BeamSearch::evaluation(Node &&node) {
+    if (node.id==24) {
+        Solution::printB(node.getBlockStruc());
+    }
     isWithinTimeLimit();
     // compute an upper bound
     // Get the list of available job, i.e. job that have not been scheduled or removed, to compute upper bound
@@ -38,8 +41,11 @@ inline BeamSearch::BeamSearchNode BeamSearch::evaluation(Node &&node) {
     #ifdef DEBUG_BaB
     Solution testUB = Solution(instance);
     testUB.fromBlockStruct(upperBoundSolution);
-    if (not testUB.feasible(instance))
+    if (not testUB.feasible(instance)) {
+        testUB.explainInfeasibility(instance);
+        Solution::printB(testUB.toBlockStruct(instance));
         throw BiSchException("Error in the compute of upper bound by completing an partial solution with the heuristic");
+    }
     #endif
     double upperBound = Solution::evaluate(upperBoundSolution, instance);
     if (isSmaller(firstUB,0)) {

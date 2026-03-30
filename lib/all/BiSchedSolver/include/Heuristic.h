@@ -473,7 +473,7 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
                 double completionTime = 0.0;
                 unsigned int indexInMachineBack = indexInMachine;
                 while (indexLoopBackBlock >= 0) {
-                    // if the block loopBackBlock have the machine, i.e. the index of hte machine is between the first and the last index of machine in the 'indexLoopBackBlock'
+                    // if the block loopBackBlock have the machine, i.e. the index of the machine is between the first and the last index of machine in the 'indexLoopBackBlock'
                     if (E[indexLoopBackBlock].front().first <= indexMachine && indexMachine <= E[indexLoopBackBlock].back().first) {
                         indexInMachineBack = E[indexLoopBackBlock][indexMachine].second;
                         auto & jobWithCj = blockStruct[indexMachine][indexInMachineBack];
@@ -508,7 +508,9 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
             while (itLoopRemainingCj != treeCj.end() && itLoopRemainingJobs != listJobThatCanBeSchedule.end()) {
                 auto &[indexMachine,indexInMachine] = itLoopRemainingCj->second;
                 auto &jobWithCj = blockStruct[indexMachine][indexInMachine];
+                // fill the block with the jobs and the guessed completion time
                 jobWithCj.first = &instance->getListJobs()[itLoopRemainingJobs->getIndex()];
+                jobWithCj.second = itLoopRemainingCj->first;
                 ++itLoopRemainingJobs;
                 ++itLoopRemainingCj;
             }
@@ -527,7 +529,7 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
         listJobsAvailable.erase(itRemove, listJobsAvailable.end());
         indexLoopBlock--;
     }
-    // know we have the case where indexLoopBlock == indexBlock, some we can compute exactly the optimal assigment because we know all completion time
+    // know we have the case where indexLoopBlock == indexBlock, so we can compute exactly the optimal assigment because we know all completion time
     std::vector<unsigned int> listUnchangedMachine;
     listUnchangedMachine.reserve(instance->getNbMachines());
     for (auto &[indexMachine,indexInMachine] : E[indexBlock]) {
@@ -536,6 +538,15 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
     }
     freeAndAssignmentBlock(blockStruct,indexBlock,&listJobsAvailable,&listUnchangedMachine);
 
+    #ifdef DEBUG_BaB
+    Solution testUB = Solution(instance);
+    testUB.fromBlockStruct(blockStruct);
+    if (not testUB.feasible(instance)) {
+        testUB.explainInfeasibility(instance);
+        Solution::printB(blockStruct);
+        throw BiSchException("Error in heuristic that constructs an solution");
+    }
+    #endif
     return blockStruct;
 }
 
