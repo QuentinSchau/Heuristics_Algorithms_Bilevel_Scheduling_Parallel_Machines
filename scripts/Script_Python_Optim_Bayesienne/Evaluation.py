@@ -153,6 +153,7 @@ def Compute_deviation(Best_parameter):
     dev_opt = [[] for _ in range(EVLMinNumJob,EVLMaxNumJob+EVLStepNumJob,EVLStepNumJob)]
     times_opt = [[] for _ in range(EVLMinNumJob,EVLMaxNumJob+EVLStepNumJob,EVLStepNumJob)]
     times_res = [[] for _ in range(EVLMinNumJob,EVLMaxNumJob+EVLStepNumJob,EVLStepNumJob)]
+    improvement=0
     # For every repetition and every instance, create a task
     for _ in range(Algorithm.ALGRepetitions):
         # 1. Generate the list of ALL tasks to be run
@@ -206,11 +207,12 @@ def Compute_deviation(Best_parameter):
                 dev_opt[indexLoopStatsPerJobs].append((max_UB-res_opt)/max_UB*100)
                 times_opt[indexLoopStatsPerJobs].append(Algorithm.Get_execution_time(f"{Algorithm.ALGResFile}/donnees_{nb_jobs}_{index_instance+1}.dat.seq"))
                 times_res[indexLoopStatsPerJobs].append(Algorithm.Get_execution_time(f"{EVLValRD}/donnees_{nb_jobs}_{index_instance+1}.dat.seq"))
+                improvement += (res_ref-res_opt)/max_UB
             indexLoopStatsPerJobs+=1
-
+    improvement /= Algorithm.ALGRepetitions
     # save our results in a csv file
     with open("validation_results.csv", "w") as f:
-        f.write(";Baseline;;;;;Learned;;;;\n")
+        f.write(f";Baseline;;;;;Learned;;;;improvement;{improvement}\n")
         f.write("n;t_min;t_moy;t_max;dev min (%);dev moy(%);t_min;t_moy;t_max;dev min (%);dev moy(%)\n")
         nb_jobs=EVLMinNumJob
         indexLoopStatsPerJob = 0
