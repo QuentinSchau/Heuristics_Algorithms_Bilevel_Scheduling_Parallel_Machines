@@ -82,7 +82,7 @@ def Create_Param(DataFile:str,index_instance:int,alpha1:float,alpha2:float,alpha
                     "name": "BeamSearch",
                     "verbose": 0,
                     "timeLimits": 60,
-                    "beamSize": W,
+                    "beamSize": int(W),
                     "alpha": alpha,
                     "recovering": True,
                     "LocalSearch_parameters": {

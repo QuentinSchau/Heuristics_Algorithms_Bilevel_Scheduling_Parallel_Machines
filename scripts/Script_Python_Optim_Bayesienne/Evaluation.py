@@ -216,7 +216,7 @@ def Compute_deviation(Best_parameter):
         indexLoopStatsPerJob = 0
         while nb_jobs<=EVLMaxNumJob:
             refTimesPerJobs = times_res[indexLoopStatsPerJob] #list reference times per jobs
-            optTimesPerJobs = times_res[indexLoopStatsPerJob] #list optimized times per jobs
+            optTimesPerJobs = times_opt[indexLoopStatsPerJob] #list optimized times per jobs
             refDevPerJobs = dev_res[indexLoopStatsPerJob] #list reference deviation per jobs
             optDevPerJobs = dev_opt[indexLoopStatsPerJob] #list optimized deviation per jobs
             f.write(f"{nb_jobs};{min(refTimesPerJobs)};{np.mean(refTimesPerJobs)};{max(refTimesPerJobs)};{min(refDevPerJobs)};{np.mean(refDevPerJobs)};{min(optTimesPerJobs)};{np.mean(optTimesPerJobs)};{max(optTimesPerJobs)};{min(optDevPerJobs)};{np.mean(optDevPerJobs)}\n")
