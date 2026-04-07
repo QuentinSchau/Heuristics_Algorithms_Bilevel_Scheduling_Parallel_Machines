@@ -326,8 +326,6 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
         /** Start local search **/
 
         bool foundBetterSol = false;
-        // if (node.id == 68)
-            // std::cout << "";
 
         #ifdef DEBUG_HEURISTIC
         Solution testSol(instance);
@@ -360,8 +358,6 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                     if (instance->getIndexIdenticalGroupOfJob(indexRemovedJobFromSelection) != instance->getIndexIdenticalGroupOfJob(indexJobNotSelected)) {
                         // select the removed job
                         alreadySelectedJobs[indexJobNotSelected] = true;
-                        if (indexRemovedJobFromSelection == 22 && indexJobNotSelected == 20)
-                            std::cout << "";
                         // we swap the job and update the block structure, leading to newBlockStructure
                         auto [newBlockStructure,newObjValue] = localSearchSolver.updateBlockStructureWithSwap(listJobsSelected, blockStructFromNode, indexJobNotSelected, indexRemovedJobFromSelection);
                         isWithinTimeLimit();
@@ -371,8 +367,11 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                         newObjValue = Solution::evaluate(newBlockStructure, instance);
                         #ifdef DEBUG_HEURISTIC
                         testSol.fromBlockStruct(newBlockStructure);
-                        if (not testSol.feasible(instance))
+                        if (not testSol.feasible(instance)){
+                            testSol.explainInfeasibility(instance);
+                            Solution::printB(testSol.toBlockStruct(instance));
                             throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                        }
                         #endif
 
                         if (isSmaller(newObjValue, bestUB)) {
@@ -391,8 +390,6 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                             foundBetterSol = true;
                             bestSwap = {indexRemovedJobFromSelection,indexJobNotSelected};
                         }
-                        if (indexRemovedJobFromSelection == 4 && indexJobNotSelected == 0)
-                            std::cout << "";
                         // reset the initial state
                         alreadySelectedJobs[indexJobNotSelected] = false;
                         LocalSearch::swapJobsInSelection(listJobsSelected, indexRemovedJobFromSelection, indexJobNotSelected);
@@ -494,9 +491,6 @@ inline void BeamSearch::recoveringLocalSearchV2(BeamSearchNode & BSnode){
     // sort the block structure by makespan
     Solution::sortBlockStructurePerMakespan(blockStructFromNode, instance);
 
-    // if (node.id == 68)
-    //     std::cout << "";
-
     #ifdef DEBUG_HEURISTIC
     Solution testSol(instance);
     testSol.fromBlockStruct(node.getBlockStruc());
@@ -518,8 +512,6 @@ inline void BeamSearch::recoveringLocalSearchV2(BeamSearchNode & BSnode){
             if (instance->getIndexIdenticalGroupOfJob(indexRemovedJobFromSelection) != instance->getIndexIdenticalGroupOfJob(indexJobNotSelected)) {
                 // select the removed job
                 alreadySelectedJobs[indexJobNotSelected] = true;
-                if (indexRemovedJobFromSelection == 22 && indexJobNotSelected == 20)
-                    std::cout << "";
                 // we swap the job and update the block structure, leading to newBlockStructure
                 auto [newBlockStructure,newObjValue] = localSearchSolver.updateBlockStructureWithSwap(listJobsSelected, blockStructFromNode, indexJobNotSelected, indexRemovedJobFromSelection);
                 unsigned int indexBlock = 0;
@@ -543,8 +535,11 @@ inline void BeamSearch::recoveringLocalSearchV2(BeamSearchNode & BSnode){
                         UB = Solution::evaluate(newBlockStructureFromNeighbor, instance);
                         #ifdef DEBUG_HEURISTIC
                         testSol.fromBlockStruct(newBlockStructureFromNeighbor);
-                        if (not testSol.feasible(instance))
+                        if (not testSol.feasible(instance)){
+                            testSol.explainInfeasibility(instance);
+                            Solution::printB(testSol.toBlockStruct(instance));
                             throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                        }
                         #endif
                         // if the permutation reduce the weighted number of tardy jobs
                         if (isSmaller(UB, bestUB)) {
@@ -574,8 +569,6 @@ inline void BeamSearch::recoveringLocalSearchV2(BeamSearchNode & BSnode){
                     bestBlockStructure = bestBlockStructureWithPermutation;
                     NB_best_sol_find_reco++;
                 }
-                if (indexRemovedJobFromSelection == 4 && indexJobNotSelected == 0)
-                    std::cout << "";
                 // reset the initial state
                 alreadySelectedJobs[indexJobNotSelected] = false;
                 LocalSearch::swapJobsInSelection(listJobsSelected, indexRemovedJobFromSelection, indexJobNotSelected);
@@ -644,9 +637,6 @@ inline void BeamSearch::recoveringLocalSearchV3(BeamSearchNode & BSnode){
     // sort the block structure by makespan
     Solution::sortBlockStructurePerMakespan(blockStructFromNode, instance);
 
-    // if (node.id == 136)
-    //     std::cout << "";
-
     #ifdef DEBUG_HEURISTIC
     Solution testSol(instance);
     testSol.fromBlockStruct(node.getBlockStruc());
@@ -668,8 +658,6 @@ inline void BeamSearch::recoveringLocalSearchV3(BeamSearchNode & BSnode){
             if (instance->getIndexIdenticalGroupOfJob(indexRemovedJobFromSelection) != instance->getIndexIdenticalGroupOfJob(indexJobNotSelected)) {
                 // select the removed job
                 alreadySelectedJobs[indexJobNotSelected] = true;
-                if (indexRemovedJobFromSelection == 48 && indexJobNotSelected == 4)
-                    std::cout << "";
                 // we swap the job and update the block structure, leading to newBlockStructure
                 auto [newBlockStructure,newObjValue] = localSearchSolver.updateBlockStructureWithSwap(listJobsSelected, blockStructFromNode, indexJobNotSelected, indexRemovedJobFromSelection);
                 unsigned int indexBlock = 0;
@@ -689,14 +677,17 @@ inline void BeamSearch::recoveringLocalSearchV3(BeamSearchNode & BSnode){
                         Solution::BlockStructure blockStructureFromNeighbor = *itSol;
                         Solution::BlockStructure newBlockStructureFromNeighbor = blockStructureFromNeighbor;
                         // we fill the partial schedule with a heuristic to get a feasible solution thus an upper bound
-                        Solution::mergeTwoBlockStructure(newBlockStructureFromNeighbor, BSnode.completingSchedule);
+                        Solution::mergeTwoBlockStructure(newBlockStructureFromNeighbor, BSnode.completingSchedule,instance);
 
                         UB = Solution::evaluate(newBlockStructureFromNeighbor, instance);
                         addSolToListBestSolutions(newBlockStructureFromNeighbor, UB);
                         #ifdef DEBUG_HEURISTIC
                         testSol.fromBlockStruct(newBlockStructureFromNeighbor);
-                        if (not testSol.feasible(instance))
+                        if (not testSol.feasible(instance)){
+                            testSol.explainInfeasibility(instance);
+                            Solution::printB(testSol.toBlockStruct(instance));
                             throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                        }
                         #endif
                         // if the permutation reduce the weighted number of tardy jobs
                         if (isSmaller(UB, bestUB)) {
@@ -726,8 +717,6 @@ inline void BeamSearch::recoveringLocalSearchV3(BeamSearchNode & BSnode){
                     bestBlockStructure = bestBlockStructureWithPermutation;
                     NB_best_sol_find_reco++;
                 }
-                if (indexRemovedJobFromSelection == 4 && indexJobNotSelected == 0)
-                    std::cout << "";
                 // reset the initial state
                 alreadySelectedJobs[indexJobNotSelected] = false;
                 LocalSearch::swapJobsInSelection(listJobsSelected, indexRemovedJobFromSelection, indexJobNotSelected);

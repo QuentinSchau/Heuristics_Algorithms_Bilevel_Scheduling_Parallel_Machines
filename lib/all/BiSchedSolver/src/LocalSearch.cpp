@@ -148,9 +148,6 @@ std::pair<Solution::BlockStructure, double> LocalSearch::updateBlockStructureWit
         }
     }
     Solution::BlockStructure newBlockStructure = blockStructure;
-    if (indexJobToInsert == 495 && indexJobToRemove == 494)
-        std::cout << "";
-
     swapJobsInSelection(listIndexOfJobs, indexJobToInsert, indexJobToRemove);
     // fill the rest with the block structure
     for (; indexBlock < E.size(); indexBlock++) {
@@ -187,7 +184,7 @@ std::pair<Solution::BlockStructure, double> LocalSearch::updateBlockStructureWit
             }
         }
     }
-    // loop over the block structure and add the location corresponding to a idencal job
+    // loop over the block structure and add the location corresponding to an identical job
     for (indexBlock = 0; indexBlock < E.size(); ++indexBlock) {
         for (auto &[indexMachine,indexInMachine] : E[indexBlock]) {
             // if there is a job
@@ -418,8 +415,11 @@ void LocalSearch::localSearchOnlySwapV1() {
                     Solution::BlockStructure blockStructFromLeaderN = *itNeighbor;
                     #ifdef DEBUG_HEURISTIC
                     testSol.fromBlockStruct(blockStructFromLeaderN);
-                    if (not testSol.feasible(instance))
-                        throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                    if (not testSol.feasible(instance)){
+                            testSol.explainInfeasibility(instance);
+                            Solution::printB(testSol.toBlockStruct(instance));
+                            throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                        }
                     if (lastBlockStruct == blockStructFromLeaderN) {
                         throw BiSchException("Error in compute leader neighborhood, same neighbor from previous iterator");
                     }
@@ -1231,15 +1231,16 @@ void LocalSearch::exploreNeighborhood(Solution::BlockStructure & bestBlockStruct
                         isWithinTimeLimit();
                         // select the job new job
                         alreadySelectedJobs[indexJobNotSelected] = true;
-                        if (indexRemovedJobFromSelection == 494 && indexJobNotSelected == 495)
-                            std::cout << "";
                         nbSol++;
                         auto [newBlockStructure,newObjValue] = updateBlockStructureWithSwap(
                             listScheduledJobs, currentBlockStructure, indexJobNotSelected, indexRemovedJobFromSelection);
                         #ifdef DEBUG_HEURISTIC
                         testSol.fromBlockStruct(newBlockStructure);
-                        if (not testSol.feasible(instance))
+                        if (not testSol.feasible(instance)){
+                            testSol.explainInfeasibility(instance);
+                            Solution::printB(testSol.toBlockStruct(instance));
                             throw BiSchException("Error in compute leader neighborhood, block structure not feasible");
+                        }
                         #endif
 
                         // sort machines by makespan
@@ -1265,8 +1266,6 @@ void LocalSearch::exploreNeighborhood(Solution::BlockStructure & bestBlockStruct
                             foundBetterSol = true;
                             if (not useBestNeighbor) break;
                         }
-                        if (indexRemovedJobFromSelection == 4 && indexJobNotSelected == 0)
-                            std::cout << "";
                         // unselect the job the new job
                         alreadySelectedJobs[indexJobNotSelected] = false;
                         swapJobsInSelection(listScheduledJobs, indexRemovedJobFromSelection, indexJobNotSelected);

@@ -74,39 +74,22 @@ public:
     }
 
     void static mergeTwoBlockStructure(BlockStructure &leftBlockStructure,
-                                  const BlockStructure &rightBlockStructure) {
+                                  const BlockStructure &rightBlockStructure,Instance * instance) {
         assert(leftBlockStructure.size() == rightBlockStructure.size());
-
-        // Single pass with immediate assignment
-        for (unsigned int indexOfMachine = 0; indexOfMachine < leftBlockStructure.size(); ++indexOfMachine) {
-
-            for (unsigned int indexLoopBlock = 0; indexLoopBlock < leftBlockStructure[indexOfMachine].size(); ++indexLoopBlock) {
-                assert(indexOfMachine < leftBlockStructure.size());
-                assert(indexOfMachine < rightBlockStructure.size());
-                assert(indexLoopBlock < leftBlockStructure[indexOfMachine].size());
-                assert(indexLoopBlock < rightBlockStructure[indexOfMachine].size());
-
-                auto& leftBlock = leftBlockStructure[indexOfMachine][indexLoopBlock];
-                const auto& rightBlock = rightBlockStructure[indexOfMachine][indexLoopBlock];
+        auto& E = instance->getE();
+        for (unsigned int indexBlock = 0; indexBlock < E.size(); ++indexBlock) {
+            for (auto &[indexMachine, indexBlockInBlockStruct]: E[indexBlock]) {
+                auto& leftBlock = leftBlockStructure[indexMachine][indexBlockInBlockStruct];
+                const auto& rightBlock = rightBlockStructure[indexMachine][indexBlockInBlockStruct];
 
                 if (leftBlock.first != nullptr && rightBlock.first != nullptr) {
                     // Find next free position for this overlapping job
-                    unsigned int indexMachineWithoutJob = 0;
-                    while (indexMachineWithoutJob < leftBlockStructure.size()) {
-                        unsigned int indexInMachineWithoutJob = indexLoopBlock;
-                        if (leftBlockStructure[indexMachineWithoutJob][indexInMachineWithoutJob].first == nullptr) {
-                            // check if the machine have at least one free position
-                            while ( indexInMachineWithoutJob > 0
-                                    &&  leftBlockStructure[indexMachineWithoutJob][indexInMachineWithoutJob].first == nullptr
-                                    &&  leftBlockStructure[indexMachineWithoutJob][indexInMachineWithoutJob - 1].first == nullptr) {
-                                indexInMachineWithoutJob--;
-                                    }
-                            leftBlockStructure[indexMachineWithoutJob][indexInMachineWithoutJob].first = rightBlock.first;
+                    for (auto &[indexOtherMachine, indexOtherBlockInBlockStruct]: E[indexBlock]){
+                        if (leftBlockStructure[indexOtherMachine][indexOtherBlockInBlockStruct].first == nullptr) {
+                            leftBlockStructure[indexOtherMachine][indexOtherBlockInBlockStruct].first = rightBlock.first;
                             break;
                         }
-                        ++indexMachineWithoutJob;
                     }
-                    // If no free position found, this job remains unassigned
                 }
                 else if (leftBlock.first == nullptr && rightBlock.first != nullptr) {
                     leftBlock.first = rightBlock.first;
@@ -114,6 +97,16 @@ public:
                 // Both nullptr case doesn't need special handling
             }
         }
+        #ifdef DEBUG_HEURISTIC
+        Solution testSol(instance);
+        testSol.fromBlockStruct(leftBlockStructure);
+        if (not testSol.feasible(instance)){
+            testSol.explainInfeasibility(instance);
+            Solution::printB(testSol.toBlockStruct(instance));
+            throw BiSchException("Error in merging two block structure");
+        }
+        #endif
+
     }
 
 
