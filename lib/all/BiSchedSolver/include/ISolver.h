@@ -47,7 +47,7 @@ protected:
     std::chrono::duration<double> time_limits = std::chrono::seconds(60);
     std::shared_ptr<std::atomic<bool>> timeUp; //boolean to stop solve when time limit is reached
     std::thread timerThread; //thread only for time
-    bool timerActive = false; //boolean to make the timer active
+    std::atomic<bool> timerActive = false; //boolean to make the timer active
 
 public:
     // declare the binary tree of completion times that is not assigned with the corresponding position,
@@ -472,7 +472,6 @@ public:
         timeUp->store(false, std::memory_order_relaxed);
         //rerun the thread timer
         startTimerThread();
-
     }
 
     /**
@@ -483,11 +482,15 @@ public:
      */
     void startTimerThread() {
         timeUp->store(false, std::memory_order_relaxed);
-        timerActive = true;
-        timerThread = std::thread([this]() {
+        timerActive.store(true, std::memory_order_relaxed);
+
+        const auto localStart = start;
+        const auto localLimit = time_limits;
+
+        timerThread = std::thread([this, localStart, localLimit]() {
             try {
-                while (timerActive) {
-                    if (std::chrono::steady_clock::now() >= start + time_limits) {
+                while (timerActive.load(std::memory_order_relaxed)) {
+                    if (std::chrono::steady_clock::now() >= localStart + localLimit) {
                         timeUp->store(true, std::memory_order_relaxed);
                         break;
                     }
@@ -521,7 +524,7 @@ public:
      * otherwise it will naturally finish its sleep loop.
      */
     void stopTimerThread() {
-        timerActive=false;
+        timerActive.store(false, std::memory_order_relaxed);
         if (timerThread.joinable()) {
             timerThread.join();
         }

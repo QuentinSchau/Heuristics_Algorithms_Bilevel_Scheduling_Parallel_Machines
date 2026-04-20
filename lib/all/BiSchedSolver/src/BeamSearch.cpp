@@ -269,14 +269,14 @@ void BeamSearch::solve() {
                 }
             }
         } catch (const BiSchTimeOutException &e) {} //do nothing
-
+        stopTimerThread();
         //restore time limit and start time of the Beam Search Solver
         start=tempStartTime;
         time_limits=tempTimeLimit;
         const auto endLS{std::chrono::steady_clock::now()};
         time_elapsed_in_LS = std::chrono::duration<double>{endLS - startLS};
-        // if (verbose >= 2)
-        //     std::cout << "Local Search is over after " << time_elapsed_in_LS.count() << " seconds" << std::endl;
+        if (verbose >= 2)
+            std::cout << "Local Search is over after " << time_elapsed_in_LS.count() << " seconds" << std::endl;
         time_elapsed = std::chrono::duration<double>{endLS - start};
     }
     solution->evaluate();
