@@ -143,27 +143,7 @@ def main(args):
                 for i in range(nbInstanceToGenerate):
                     # Solve instances config
                     configSolve = {"solve": {"verbose": verbose, "output": str(outputResult), "methods": []}}
-                    if method == "MIP":
-                        configSolve["solve"]["methods"].append({
-                            "name": "MIP",
-                            "verbose": verbose,
-                            "timeLimits": timeLimit,
-                            "relaxation": False,
-                            "instances": [
-                                {"path": f"{pathSaveInstance}/instance{i}{x}.txt"}
-                            ]
-                        })
-                    elif method == "LP":
-                        configSolve["solve"]["methods"].append({
-                            "name": "LP",
-                            "verbose": verbose,
-                            "timeLimits": timeLimit,
-                            "relaxation": True,
-                            "instances": [
-                                {"path": f"{pathSaveInstance}/instance{i}{x}.txt"}
-                            ]
-                        })
-                    elif method == "CG":
+                    if method == "CG":
                         configSolve["solve"]["methods"].append({
                             "name": "CG",
                             "verbose": verbose,
@@ -172,52 +152,6 @@ def main(args):
                             "nbMinStateDP": nbMinStateDP,
                             "thresholdSetCol": 0.8,
                             "nbTimeNotUsed": 20,
-                            "timeLimits": timeLimit,
-                            "instances": [
-                                {"path": f"{pathSaveInstance}/instance{i}{x}.txt"}
-                            ]
-                        })
-                    elif method == "BaB_CG":
-                        configSolve["solve"]["methods"].append({
-                            "name": "BaB",
-                            "verbose": verbose,
-                            "strategy": str(strategy),
-                            "scheme": "location",
-                            "memorization":memo,
-                            "LB_parameters": {
-                                "name": "CG",
-                                "verbose": verbose,
-                                "debug": False,
-                                "gen_columns": useHeuristic,
-                                "maxNbCallHeuristic": maxNbCallHeuristic,
-                                "nbMinStateDP": nbMinStateDP,
-                                "thresholdSetCol": 0.8,
-                                "nbTimeNotUsed": 20,
-                                "timeLimits": 300
-                            },
-                            "timeLimits": timeLimit,
-                            "instances": [
-                                {"path": f"{pathSaveInstance}/instance{i}{x}.txt"}
-                            ]
-                        })
-                    elif method == "BaB_MIP":
-                        configSolve["solve"]["methods"].append({
-                            "name": "BaB",
-                            "verbose": verbose,
-                            "strategy": str(strategy),
-                            "scheme": "location",
-                            "memorization": memo,
-                            "LB_parameters": {
-                                "name": "CG",
-                                "verbose": 1,
-                                "debug": False,
-                                "gen_columns": useHeuristic,
-                                "maxNbCallHeuristic": maxNbCallHeuristic,
-                                "nbMinStateDP": nbMinStateDP,
-                                "thresholdSetCol": 0.8,
-                                "nbTimeNotUsed": 20,
-                                "timeLimits": 300
-                            },
                             "timeLimits": timeLimit,
                             "instances": [
                                 {"path": f"{pathSaveInstance}/instance{i}{x}.txt"}

@@ -27,7 +27,7 @@ methods=("BeamSearch" "LocalSearch")
 strategies=("local-search")
 alphas=(0.0)
 versionsRECO=(3)
-listVersionLSinReco=(1)
+listVersionLSinMSLS=(1)
 listVersionLS=(1 4 5)
 bestImprove=1
 n_values=(40)
@@ -57,7 +57,7 @@ for n in "${n_values[@]}"; do
                 for strategy in "${strategies[@]}"; do
                   if [[ "$strategy" == "local-search" ]]; then
                     for version in "${versionsRECO[@]}"; do
-                      for versionLS in "${listVersionLSinReco[@]}"; do
+                      for versionLS in "${listVersionLSinMSLS[@]}"; do
                         echo "Running with method=$method, n=$n, strategy=$strategy, alpha= $alpha,nbSolutionForMSLS=$nbSolutionForMSLS, use reco=$reco, version= $version, versionLS=$versionLS and beam size=$beamSize"
 
                         # --m 1,1

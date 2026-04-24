@@ -34,5 +34,16 @@ for n in "${n_values[@]}"; do
     $(realpath $SCRIPT_DIR/../bin/Release/bilevel-scheduling) \
       $(realpath $SCRIPT_DIR/../instances/configs/config_generate_N${n}_M4.json)
 
+      # Second instance generation and execution
+      python3 $(realpath $SCRIPT_DIR/generateInstances.py) \
+        --no-identical-jobs $idJobs \
+        --frac-of-n "${frac_n[@]}" \
+        --m 5,5 --seed $seed --nb-instance-to-generate $nbInstGen \
+        --n-list $n --config-file-name-generate config_generate_N${n}_M10 \
+        --path-save-instance /instances/N$n/instances/
+
+    $(realpath $SCRIPT_DIR/../bin/Release/bilevel-scheduling) \
+      $(realpath $SCRIPT_DIR/../instances/configs/config_generate_N${n}_M10.json)
+
     echo "Completed generation of instances"
 done
