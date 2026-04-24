@@ -177,7 +177,7 @@ def main(args):
                                 "version": versionLS,
                                 "useBestNeighbor": bestImproveLS==1,
                                 "timeLimits": TLS if autoSetting else timeLimitLS,
-                                "maxIter": 50
+                                "maxIter": 100
                             },
                             "alpha": alpha,
                             "instances": [
