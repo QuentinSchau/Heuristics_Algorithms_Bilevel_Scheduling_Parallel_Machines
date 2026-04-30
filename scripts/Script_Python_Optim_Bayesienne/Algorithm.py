@@ -71,7 +71,7 @@ def Create_Param(DataFile:str,index_instance:int,alpha1:float,alpha2:float,alpha
     temp_dir = os.path.join(os.path.dirname(__file__),"temp/")
     os.makedirs(temp_dir, exist_ok=True)
     temp_file_output = os.path.join(temp_dir, f"N_{N}_{index_instance}_resultsBeamSearch.csv")
-    W = math.floor(math.exp(alpha1*N+alpha2) + alpha3 * m ) + alpha4
+    W = math.floor(math.exp((-math.log(alpha2)/60)*N+(math.log(alpha1)+5/3*math.log(alpha2))) + alpha3 * m ) + alpha4
     alpha = min(alpha5 * N + alpha6*n + alpha7*m + alpha8,1.0)
     JSON_param={
         "solve": {

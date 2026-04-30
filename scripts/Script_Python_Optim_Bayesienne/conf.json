@@ -26,12 +26,14 @@
   "probe": {"points": []},
   "hyperparameters": {
     "alpha1": {
-      "min": -0.2,
-      "max": -0.06
+      "min": 1,
+      "max": 25,
+      "isInteger": true
     },
     "alpha2": {
-      "min": 4,
-      "max": 8
+      "min": 1,
+      "max": 100,
+      "isInteger": true
     },
     "alpha3": {
       "min": 0,

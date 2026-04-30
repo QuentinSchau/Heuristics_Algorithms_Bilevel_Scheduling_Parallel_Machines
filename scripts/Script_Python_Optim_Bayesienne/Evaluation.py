@@ -79,10 +79,18 @@ def Function(alpha1:float,alpha2:float,alpha3:float,alpha4:float,alpha5:float,al
     print("Evaluate at : ",alpha1,alpha2,alpha3,alpha4,alpha5,alpha6,alpha7,alpha8)
     
     # if we have the lowest value of the term alpha that is greater than 1.0 then return negative value. this allow to implement the Constrained Optimization cf "https://bayesian-optimization.github.io/BayesianOptimization/3.2.0/constraints.html"
-    if alpha5 * 40 + alpha6*10 + alpha7*2 + alpha8 > 1.0:
-        return -1000.0
-    if alpha5 * 80 + alpha6*60 + alpha7*4 + alpha8 < 0.0:
-        return -1000.0
+    vals = []
+    for N in [40, 50,60,70,80,90,100]:
+        for c in [1/4, 1/2, 3/4]:
+            for m in [2, 4, 10]:
+                vals.append( N * (alpha5 + c * alpha6) + alpha7 * m + alpha8 )
+
+    Lmin = min(vals)
+    Lmax = max(vals)
+
+    if Lmin < 0.0 or Lmax > 1.0:
+        return -10000
+
     # 0. For each repetition
     # ---------------------------------------------------------
     improvement = 0.0
