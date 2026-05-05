@@ -34,7 +34,7 @@
       "max": 4.61
     },
     "alpha3": {
-      "min": 0,
+      "min": -10,
       "max": 10
     },
     "alpha4": {
@@ -43,19 +43,19 @@
       "isInteger": true
     },
     "alpha5": {
-      "min": 0.0,
+      "min": -1.0,
       "max": 1.0
     },
     "alpha6": {
-      "min": 0.0,
+      "min": -1.0,
       "max": 1.0
     },
     "alpha7": {
-      "min": 0.0,
+      "min": -1.0,
       "max": 1.0
     },
     "alpha8": {
-      "min": 0.0,
+      "min": -1.0,
       "max": 1.0
     }
   }
