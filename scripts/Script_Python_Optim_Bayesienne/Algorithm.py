@@ -71,8 +71,23 @@ def Create_Param(DataFile:str,index_instance:int,alpha1:float,alpha2:float,alpha
     temp_dir = os.path.join(os.path.dirname(__file__),"temp/")
     os.makedirs(temp_dir, exist_ok=True)
     temp_file_output = os.path.join(temp_dir, f"N_{N}_{index_instance}_resultsBeamSearch.csv")
-    W = math.floor(math.exp((-math.log(alpha2)/60)*N+(math.log(alpha1)+5/3*math.log(alpha2))) + alpha3 * m ) + alpha4
-    alpha = min(alpha5 * N + alpha6*n + alpha7*m + alpha8,1.0)
+    # Normalization on [0,1]
+    N_tilde = (N - 40) / (100 - 40)
+    n_tilde = (n - 10) / (75 - 10)
+    m_tilde = (m - 2) / (10 - 2)
+
+    # Beam width:
+    # w(N,m)=clip_[1,100]( floor(exp(beta1*N_tilde + beta2) + beta3*m_tilde) + beta4 )
+    W_raw = math.floor(math.exp(alpha1 * N_tilde + alpha2) + alpha3 * m_tilde) + alpha4
+    W = min(max(W_raw, 1), 100)
+
+    # If W must be an integer
+    W = int(round(W))
+
+    # Alpha:
+    # alpha(N,n,m)=clip_[0,1]( beta5*N_tilde + beta6*n_tilde + beta7*m_tilde + beta8 )
+    alpha_raw = alpha5 * N_tilde + alpha6 * n_tilde + alpha7 * m_tilde + alpha8
+    alpha = min(max(alpha_raw, 0.0), 1.0)
     JSON_param={
         "solve": {
             "verbose": 0,
