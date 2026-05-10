@@ -159,10 +159,19 @@ def main(args):
                         })
                     elif method == "BeamSearch":
                         m = (mMax + M0)
-                        W = math.floor(math.exp(-0.08314*N+7.58913) + 0.02676 * m) + 4 if (nbSolutionForMSLS > 0) else math.floor(math.exp(-0.2*N+4.40793) + 0.38714 * m ) + 5
-                        K = 1460
-                        TLS = math.ceil( 0.377*timeLimit)
-                        alpha = min(-0.0125*N-0.01314*n+0.25*m+0.97376,1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
+                        # Normalization on [0,1]
+                        N_tilde = (N - 40) / (100 - 40)
+                        n_tilde = (n - 10) / (75 - 10)
+                        m_tilde = (m - 2) / (10 - 2)
+
+                        W_raw = math.floor(math.exp(-1.36890 * N_tilde + 0.92932) + 1.38553 * m_tilde) + 3 if nbSolutionForMSLS > 0 else math.floor(math.exp(-1.15969 * N_tilde + -1.65353) + -10.0 * m_tilde) + 5
+                        W = min(max(W_raw, 1), 100)
+                        # If W must be an integer
+                        W = int(round(W))
+                        alpha_raw = -1.0 * N_tilde + -1.0 * n_tilde + m_tilde + 1.0
+                        alpha = min(max(alpha_raw, 0.0), 1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
+                        TLS = math.ceil( 0.328*timeLimit)
+                        K = 1459
                         configSolve["solve"]["methods"].append({
                             "name": "BeamSearch",
                             "verbose": verbose,

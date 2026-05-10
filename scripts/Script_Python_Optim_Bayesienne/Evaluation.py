@@ -57,7 +57,7 @@ def Compute_Improvement(nb_jobs:int)->float:
 def run_worker(args):
     """
     Unpacks arguments and calls Algorithm.Run.
-    args is a tuple: (EVLDatabase, nb_jobs, alpha1...alpha9, instance_idx)
+    args is a tuple: (EVLDatabase, nb_jobs, alpha1...alpha8, instance_idx)
     """
     # Unpack the tuple. Order must match how we pack it below.
     (evl_dd, nb_jobs, a1, a2, a3, a4, a5, a6,a7,a8,instance_idx) = args
@@ -115,13 +115,13 @@ def Function(alpha1:float,alpha2:float,alpha3:float,alpha4:float,alpha5:float,al
         # 2. Run ALL tasks in parallel using a single Pool
         # ---------------------------------------------------------
         # This saturates the CPUs because we don't wait between nb_jobs steps
-        with Pool(EVLNumCPU) as p:
+        all_tasks.sort(key=lambda x: x[1], reverse=True) # put the long jobs first
+        with Pool(processes=min(EVLNumCPU, len(all_tasks))) as p:
+            iterator = p.imap_unordered(run_worker, all_tasks, chunksize=1)
             if EDEBUG:
-                # imap_unordered is often slightly faster if order doesn't matter, 
-                # and allows for a smooth progress bar
-                list(tqdm(p.imap_unordered(run_worker, all_tasks), total=len(all_tasks), desc="Processing all instances"))
+                list(tqdm(iterator, total=len(all_tasks), desc="Processing all instances"))
             else:
-                p.map(run_worker, all_tasks)
+                list(iterator)
 
         # 3. Compute Improvement (Post-Processing)
         # ---------------------------------------------------------
@@ -165,7 +165,7 @@ def Compute_deviation(Best_parameter):
         while current_nb_jobs <= EVLMaxNumJob:
             nb_jobs_steps.append(current_nb_jobs)
             
-            for instance_idx in range(EVLTrainNumInstpJob):
+            for instance_idx in range(EVLValidNumInstpJob):
                 # Pack all necessary arguments into a tuple
                 task_args = (
                     EVLValDD, 
@@ -183,13 +183,13 @@ def Compute_deviation(Best_parameter):
         # 2. Run ALL tasks in parallel using a single Pool
         # ---------------------------------------------------------
         # This saturates the CPUs because we don't wait between nb_jobs steps
-        with Pool(EVLNumCPU) as p:
+        all_tasks.sort(key=lambda x: x[1], reverse=True) # put the long jobs first
+        with Pool(processes=min(EVLNumCPU, len(all_tasks))) as p:
+            iterator = p.imap_unordered(run_worker, all_tasks, chunksize=1)
             if EDEBUG:
-                # imap_unordered is often slightly faster if order doesn't matter, 
-                # and allows for a smooth progress bar
-                list(tqdm(p.imap_unordered(run_worker, all_tasks), total=len(all_tasks), desc="Processing all instances"))
+                list(tqdm(iterator, total=len(all_tasks), desc="Processing all instances"))
             else:
-                p.map(run_worker, all_tasks)
+                list(iterator)
 
         # 3. Stats (Post-Processing)
         # ---------------------------------------------------------
