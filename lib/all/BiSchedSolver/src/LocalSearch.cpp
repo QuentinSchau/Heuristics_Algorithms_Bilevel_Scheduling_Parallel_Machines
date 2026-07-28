@@ -215,10 +215,10 @@ bool LocalSearch::improveBlockStructureLocallyBySwap(Solution::BlockStructure& b
     unsigned int indexBlock = 0;
     bool foundBetterNeighbor = false;
     double UB = std::numeric_limits<double>::infinity();
+    // use neighborhood on the follower decisions
+    Neighborhoods neighborhoods(instance, &blockStructure, &listScheduledJobs, 2);
     while (indexBlock < instance->getE().size()) {
         isWithinTimeLimit();
-        // use neighborhood on the follower decisions
-        Neighborhoods neighborhoods(instance, &blockStructure, &listScheduledJobs, 2);
         auto itSol = neighborhoods.beginFN();
         auto itEndNeighbor = neighborhoods.endFN();
         itSol.setIndexBlock(indexBlock); // define the current index of block
@@ -307,7 +307,7 @@ bool LocalSearch::improveBlockStructureLocallyByAssignment(Solution::BlockStruct
         foundBetterSol = false;
         unsigned int indexBlock = 0;
         nbIterImprovBlockStruct++;
-        // solve assigment problem on each block from the left to the right
+        // solve assignment problem on each block from the left to the right
         while (indexBlock < instance->getE().size()) {
             isWithinTimeLimit();
             Solution::BlockStructure currentBlockStructure = blockStructure;
@@ -323,7 +323,7 @@ bool LocalSearch::improveBlockStructureLocallyByAssignment(Solution::BlockStruct
         }
         if (foundBetterSol) {
             // foundBetterSol = false;
-            // solve assigment problem on each block from the right to the left
+            // solve assignment problem on each block from the right to the left
             while (indexBlock-->0){
                 isWithinTimeLimit();
                 assert(indexBlock < instance->getE().size());
@@ -409,7 +409,6 @@ void LocalSearch::localSearchOnlySwapV1() {
                 auto lastBlockStruct = bestBlockStructure;
                 #endif
                 for (; itNeighbor != itLastNeighbor ; ++itNeighbor) {
-                    isWithinTimeLimit();
                     //check if we don't have exceeded the time limit
                     isWithinTimeLimit();
                     Solution::BlockStructure blockStructFromLeaderN = *itNeighbor;
@@ -458,7 +457,6 @@ void LocalSearch::localSearchOnlySwapV1() {
             auto lastBlockStruct = bestBlockStructure;
             #endif
             while (foundBetterSolFollower) {
-                isWithinTimeLimit();
                 //check if we don't have exceeded the time limit
                 isWithinTimeLimit();
                 // try to improve solution with arrangement, i.e. try follower neighborhood on the leader decisions
@@ -528,7 +526,6 @@ void LocalSearch::localSearchOnlySwapV2() {
         auto lastBlockStruct = bestBlockStructure;
 #endif
         for (; itNeighbor != itLastNeighbor ; ++itNeighbor) {
-            isWithinTimeLimit();
             //check if we don't have exceeded the time limit
             isWithinTimeLimit();
             Solution::BlockStructure blockStructFromLeaderN = *itNeighbor;
@@ -590,7 +587,7 @@ void LocalSearch::localSearchOnlySwapV2() {
     solution->fromBlockStruct(bestBlockStructure);
 }
 
-void LocalSearch::localSearchOnlyAssigment() {
+void LocalSearch::localSearchOnlyassignment() {
     
     // make local search, by exploring the neighbourhood
     if (verbose >= 2) std::cout << "Begin Local search " << std::endl;
@@ -611,7 +608,6 @@ void LocalSearch::localSearchOnlyAssigment() {
     bool foundBetterSol = true;
     nbIter = 0; // the number of iteration of the method
     while (nbIter < maxIter && foundBetterSol) {
-        isWithinTimeLimit();
         //check if we don't have exceeded the time limit
         isWithinTimeLimit();
         if (verbose >= 2) {
@@ -1380,7 +1376,7 @@ void LocalSearch::solve() {
                 localSearchOnlySwapV2();
                 break;
             case 4:
-                localSearchOnlyAssigment();
+                localSearchOnlyassignment();
                 break;
             case 6: case 7 : case 8: case 9:
                 localSearchPredictor();

@@ -38,7 +38,7 @@ private:
     std::vector<std::vector<double>> costAtEachBlock;
     // The list of jobs that can be schedule on a block that we release
     std::vector<unsigned int> listAvailableIndexJob;
-    // The matrix of cost use to solve the assigment problem
+    // The matrix of cost use to solve the assignment problem
     std::vector<std::vector<double>> costMatrix;
     double smallEpsilon = 0.1;
 
@@ -74,7 +74,7 @@ public:
     void clearCostBlocks();
 
     /**
-    * Method that clear the cost matrix used to solve assigment problem.
+    * Method that clear the cost matrix used to solve assignment problem.
     */
     void clearCostMatrix();
 
@@ -382,7 +382,7 @@ inline void Heuristic::freeAndAssignmentBlock(Solution::BlockStructure &blockStr
             auto [indexMachine, indexBlockInStruct] = E[indexBlock][indexLoopMachine];
             if (listIndexUnchangedMachines != nullptr && std::find(listIndexUnchangedMachines->begin(), listIndexUnchangedMachines->end(), indexMachine) != listIndexUnchangedMachines->end()) continue;
             assert(indexMachine < assignment.size());
-            // if we index in assigment is feasible, i.e. if we are not in first block because we can select less jobs and we have introduced some dummy job
+            // if we index in assignment is feasible, i.e. if we are not in first block because we can select less jobs and we have introduced some dummy job
             if (assignment[indexLoopMachine] >= (int) listAvailableIndexJob.size()) {
                 assert(indexBlock == 0 || numJobsToScheduleOnBlock >= 0); // check we are in first block
                 continue;
@@ -499,7 +499,7 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
         std::vector<Job> listJobThatCanBeSchedule(listJobsAvailable.cbegin() + minNbJobToScheduleOnPrevBlock, listJobsAvailable.cend());
         // sort the list of jobs that can be schedule according EDD rule
         std::sort(listJobThatCanBeSchedule.begin(),listJobThatCanBeSchedule.end(),Job::EDD);
-        assigmentOnTimeJobToCompletionTime(nullptr, &blockStruct, treeCj, listJobThatCanBeSchedule);
+        assignmentOnTimeJobToCompletionTime(nullptr, &blockStruct, treeCj, listJobThatCanBeSchedule);
         if (not listJobThatCanBeSchedule.empty() && not treeCj.empty()) {
             // sort the list of jobs according weight and assign the smallest weights to remaining completion times
             std::sort(listJobThatCanBeSchedule.begin(),listJobThatCanBeSchedule.end(),[](Job &lhs, Job &rhs){return isSmaller(lhs.getWi(),rhs.getWi());});
@@ -529,7 +529,7 @@ inline Solution::BlockStructure Heuristic::constructSolutionWithHeuristic(Soluti
         listJobsAvailable.erase(itRemove, listJobsAvailable.end());
         indexLoopBlock--;
     }
-    // know we have the case where indexLoopBlock == indexBlock, so we can compute exactly the optimal assigment because we know all completion time
+    // know we have the case where indexLoopBlock == indexBlock, so we can compute exactly the optimal assignment because we know all completion time
     std::vector<unsigned int> listUnchangedMachine;
     listUnchangedMachine.reserve(instance->getNbMachines());
     for (auto &[indexMachine,indexInMachine] : E[indexBlock]) {

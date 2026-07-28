@@ -136,7 +136,7 @@ public:
      * @param listCjAndAvailablePosition A multimap of completion times and their corresponding positions in the block.
      * @param listOfIdenticalJobs A vector of jobs that are identical.
      */
-    void assigmentOnTimeJobToCompletionTime(Node *node, Solution::BlockStructure *blockStruct, std::multimap<double, std::pair<unsigned int, unsigned int>> &listCjAndAvailablePosition
+    void assignmentOnTimeJobToCompletionTime(Node *node, Solution::BlockStructure *blockStruct, std::multimap<double, std::pair<unsigned int, unsigned int>> &listCjAndAvailablePosition
                                               , std::vector<Job> &listOfIdenticalJobs) {
         isWithinTimeLimit();
         unsigned int numberElementToAdd = listCjAndAvailablePosition.size();
@@ -446,7 +446,7 @@ public:
                                               , std::vector<Job> &listOfIdenticalJobs) {
 
         // assign on time job to the completion times
-        assigmentOnTimeJobToCompletionTime(node,blockStruct,listCjAndAvailablePosition,listOfIdenticalJobs);
+        assignmentOnTimeJobToCompletionTime(node,blockStruct,listCjAndAvailablePosition,listOfIdenticalJobs);
         // assign smallest weights to the completion time when there is no on time jobs
         assignSmallestWeightToCompletionTime(node,blockStruct,listCjAndAvailablePosition,listOfIdenticalJobs);
 

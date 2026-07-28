@@ -226,7 +226,7 @@ inline bool BeamSearch::findBestSolutionReachableFromPartialSolution(Solution::B
         foundBetterSol = false;
         unsigned int indexBlock = 0;
         nbIter++;
-        // solve assigment problem on each block from the left to the right
+        // solve assignment problem on each block from the left to the right
         while (indexBlock < instance->getE().size()) {
             Solution::BlockStructure currentBlockStructure = blockStructure;
             heuristicSolver.freeAndAssignmentBlock(currentBlockStructure, indexBlock, nullptr);
@@ -240,7 +240,7 @@ inline bool BeamSearch::findBestSolutionReachableFromPartialSolution(Solution::B
         }
         if (foundBetterSol) {
             foundBetterSol = false;
-            // solve assigment problem on each block from the right to the left
+            // solve assignment problem on each block from the right to the left
             while (indexBlock-->0){
                 assert(indexBlock < instance->getE().size());
                 Solution::BlockStructure currentBlockStructure = blockStructure;
@@ -354,7 +354,7 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                     isWithinTimeLimit();
                     assert(indexRemovedJobFromSelection != indexJobNotSelected);
                     assert(not alreadySelectedJobs[indexJobNotSelected]);
-                    // if jobs we want to swap not belonging to same identical group of jobs, because we use a exact algorithm to manage this jobs.
+                    // if jobs we want to swap not belonging to same identical group of jobs, because we use an exact algorithm to manage this jobs.
                     if (instance->getIndexIdenticalGroupOfJob(indexRemovedJobFromSelection) != instance->getIndexIdenticalGroupOfJob(indexJobNotSelected)) {
                         // select the removed job
                         alreadySelectedJobs[indexJobNotSelected] = true;
@@ -380,10 +380,10 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                             bestUB = newObjValue;
                             bestSwap = {indexRemovedJobFromSelection,indexJobNotSelected};
                             assert(bestUB == Solution::evaluate(bestBlockStructure,instance));
-                            // try to improve solution with assigment the bestBlockStructure, i.e. try follower neighborhood on the leader decisions
+                            // try to improve solution with assignment the bestBlockStructure, i.e. try follower neighborhood on the leader decisions
                             findBestSolutionReachableFromPartialSolution(bestBlockStructure,bestUB);
                         }
-                        // try to improve solution (newBlockStructure) with assigment, i.e. try follower neighborhood on the leader decisions
+                        // try to improve solution (newBlockStructure) with assignment, i.e. try follower neighborhood on the leader decisions
                         else if (findBestSolutionReachableFromPartialSolution(newBlockStructure,bestUB)) {
                             bestBlockStructure = std::move(newBlockStructure);
                             assert(bestUB == Solution::evaluate(bestBlockStructure,instance));
@@ -858,7 +858,7 @@ inline std::pair<unsigned int, unsigned int> BeamSearch::computeNumberJobsOnLast
     return {startIndexBlock, n_L};
 }
 
-inline void BeamSearch::computeSetCombinationWithoutSymmetry(unsigned int nbSelect, unsigned int indexLastBlock, Node &node, const std::vector<unsigned int> &assigmentOnStartingBlock
+inline void BeamSearch::computeSetCombinationWithoutSymmetry(unsigned int nbSelect, unsigned int indexLastBlock, Node &node, const std::vector<unsigned int> &assignmentOnStartingBlock
                                                              , std::set<std::vector<unsigned int>> &setOfAssignmentOnLastBlock) {
     isWithinTimeLimit();
     // create vector for the assignment on the first block
@@ -866,15 +866,15 @@ inline void BeamSearch::computeSetCombinationWithoutSymmetry(unsigned int nbSele
     assignmentOnFirstBlock.reserve(instance->getE()[node.getIndexBlock()].size());
     // get the processing time of identical jobs
     double pj = node.getCurrentPj();
-    //if not assigment was defined for the first block, then construct it with available machine
-    if (assigmentOnStartingBlock.empty()) {
+    //if not assignment was defined for the first block, then construct it with available machine
+    if (assignmentOnStartingBlock.empty()) {
         for (auto &location: instance->getE()[node.getIndexBlock()]) {
             // if not jobs where schedule, that means we have null value for the pointer
             if (!node.getBlockStruc()[location.first][location.second].first)
                 assignmentOnFirstBlock.push_back(location.first);
         }
     } else
-        assignmentOnFirstBlock.insert(assignmentOnFirstBlock.end(), assigmentOnStartingBlock.begin(), assigmentOnStartingBlock.end());
+        assignmentOnFirstBlock.insert(assignmentOnFirstBlock.end(), assignmentOnStartingBlock.begin(), assignmentOnStartingBlock.end());
 
 
     // list of completion time of available machine use to compute the set of combinations

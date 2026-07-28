@@ -201,9 +201,9 @@ public:
 
     void localSearchOnlySwapV2();
 
-    // Version Only Assigment:
+    // Version Only assignment:
 
-    void localSearchOnlyAssigment();
+    void localSearchOnlyassignment();
 
     // Version Predictor:
     void localSearchPredictor();

@@ -210,7 +210,7 @@ Each method has its own set of parameters, which are described below:
   + `useBestNeighbor` (boolean): If True, the solver will move to the best neighbor found; if False, it may use a different selection strategy (e.g., first improvement). 
   + `version` (int): Define which specific variant of the local search algorithm to execute:
     - 1, 4, 5: Correspond to $LS_s$, $LS_{fa}$, and $LS_a$ as described in the paper.
-    - 2, 3: Variants using the leader neighborhood to avoid radical changes to the solution.
+    - 2, 3: Variants using the leader neighborhood to avoid radical changes to the solution. V2 corresponds to $LS_{s|r2}$ and V3 corresponds $LS_{s|r1}$.
     - 6, 7, 8, 9: Variants that integrate a predictor to guide the search.
     - 10: Random baseline version for performance comparison.
   + `genDatabase` (boolean): If True, the solver will generate and save data during the search (typically for training future models).

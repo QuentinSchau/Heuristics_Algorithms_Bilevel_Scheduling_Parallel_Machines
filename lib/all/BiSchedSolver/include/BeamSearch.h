@@ -215,10 +215,10 @@ public:
      * @param nbSelect The number of elements to select from the set.
      * @param indexLastBlock The index of the last block.
      * @param node A reference to a Node object.
-     * @param assigmentOnStartingBlock A vector of unsigned integers representing the assignment on the starting block.
+     * @param assignmentOnStartingBlock A vector of unsigned integers representing the assignment on the starting block.
      * @param setOfAssignmentOnLastBlock A set of combination, represented as vectors of machine indexes, representing the set of assignments on the last block.
      */
-    void computeSetCombinationWithoutSymmetry(unsigned int nbSelect, unsigned int indexLastBlock, Node &node, const std::vector<unsigned int> &assigmentOnStartingBlock
+    void computeSetCombinationWithoutSymmetry(unsigned int nbSelect, unsigned int indexLastBlock, Node &node, const std::vector<unsigned int> &assignmentOnStartingBlock
                                               , std::set<std::vector<unsigned int>> &setOfAssignmentOnLastBlock);
 
     /**
