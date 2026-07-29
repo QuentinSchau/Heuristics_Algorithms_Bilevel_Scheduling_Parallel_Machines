@@ -114,9 +114,15 @@ public:
             if (verbose >= 1)
                 std::cout << "Solver stopped due to time limit." << std::endl;
         }catch (const std::exception& e) {
+            const auto endSolve{std::chrono::steady_clock::now()};
+            time_elapsed = std::chrono::duration<double>{endSolve - start};
             std::cerr << e.what() << std::endl;
+            throw;
         }catch (...) {
+            const auto endSolve{std::chrono::steady_clock::now()};
+            time_elapsed = std::chrono::duration<double>{endSolve - start};
             std::cerr << "Exception unknown" << std::endl;
+            throw;
         }
         const auto endSolve{std::chrono::steady_clock::now()};
         time_elapsed = std::chrono::duration<double>{endSolve - start};
