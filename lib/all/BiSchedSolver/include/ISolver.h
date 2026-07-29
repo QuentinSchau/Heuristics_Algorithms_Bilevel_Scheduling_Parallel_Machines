@@ -116,11 +116,13 @@ public:
         }catch (const std::exception& e) {
             const auto endSolve{std::chrono::steady_clock::now()};
             time_elapsed = std::chrono::duration<double>{endSolve - start};
+            stopTimerThread();    // safely join timer thread
             std::cerr << e.what() << std::endl;
             throw;
         }catch (...) {
             const auto endSolve{std::chrono::steady_clock::now()};
             time_elapsed = std::chrono::duration<double>{endSolve - start};
+            stopTimerThread();    // safely join timer thread
             std::cerr << "Exception unknown" << std::endl;
             throw;
         }
