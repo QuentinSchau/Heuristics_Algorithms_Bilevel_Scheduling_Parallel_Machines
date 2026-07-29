@@ -264,6 +264,9 @@ inline bool BeamSearch::findBestSolutionReachableFromPartialSolution(Solution::B
 
 inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
     Node &node = BSnode.node;
+    if (node.id == 944) {
+         std::cout << "";
+    }
     isWithinTimeLimit();
     // Get the list of available job, i.e. job that have not been scheduled or removed, to compute upper bound
     listAvailableJobForNode.clear();
@@ -305,8 +308,8 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
     while (haveFindBestSol) {
         haveFindBestSol = false;
 
-        //update LB if we have found a better solution or if alpha =0.0 (we don't have compute LB in evaluation
-        if (nbBestSolFind > 0 || isSmallerOrEqual(alpha,0.0)) {
+        //update LB if we have found a better solution and alpha > 0.0
+        if (nbBestSolFind > 0 && isSmaller(0.0,alpha)) {
             columnGeneration.setTimeElapsed(time_elapsed);
             try{
                 columnGeneration.solve(node);
@@ -410,11 +413,6 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
             if (isSmaller(bestUB,globalUB)) {
                 this->solution->fromBlockStruct(bestBlockStructure);
             }
-            #ifdef DEBUG_HEURISTIC
-            testSol.fromBlockStruct(bestBlockStructure);
-            testListJob = testSol.extractListOfJobs();
-            testListJobIndices = std::vector<unsigned int>(viewTest.begin(),viewTest.begin() + node.getSelectedJobCount());
-            #endif
             // update the list of removed jobs, the list of selected jobs and the vector of boolean
             LocalSearch::swapJobsInSelection(listJobsSelected, bestSwap.second, bestSwap.first);
             LocalSearch::swapJobsInSelection(listRemovedJobs,  bestSwap.first,bestSwap.second);
