@@ -65,7 +65,7 @@ for n in "${n_values[@]}"; do
                           --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                           --m 1,1 --nb-instance-to-generate $nbInstGen \
                           --n-list $n --output-result /instances/N$n/2M_ --methods $method \
-                          --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                          --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                           --beamSize $beamSize --alpha $alpha --versionRBS $version --versionLS $versionLS --bestImproveLS $bestImprove --recovering $reco --strategy $strategy --alpha $alpha --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                           --path-save-instance /instances/N$n/instances/
 
@@ -74,7 +74,7 @@ for n in "${n_values[@]}"; do
                           --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                           --m 2,2 --nb-instance-to-generate $nbInstGen \
                           --n-list $n --output-result /instances/N$n/4M_ --methods $method \
-                          --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                          --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                           --beamSize $beamSize --alpha $alpha --versionRBS $version --versionLS $versionLS --bestImproveLS $bestImprove --recovering $reco --strategy $strategy --alpha $alpha --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                           --path-save-instance /instances/N$n/instances/
 
@@ -83,7 +83,7 @@ for n in "${n_values[@]}"; do
                           --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                           --m 5,5 --nb-instance-to-generate $nbInstGen \
                           --n-list $n --output-result /instances/N$n/10M_ --methods $method \
-                          --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                          --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_versionRBS_${version}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                           --beamSize $beamSize --alpha $alpha --versionRBS $version --versionLS $versionLS --bestImproveLS $bestImprove --recovering $reco --strategy $strategy --alpha $alpha --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                           --path-save-instance /instances/N$n/instances/
                         done
@@ -96,7 +96,7 @@ for n in "${n_values[@]}"; do
                       --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                       --m 1,1 --nb-instance-to-generate $nbInstGen \
                       --n-list $n --output-result /instances/N$n/2M_ --methods $method \
-                      --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
+                      --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
                       --beamSize $beamSize --alpha $alpha --recovering $reco --strategy $strategy --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                       --path-save-instance /instances/N$n/instances/
 
@@ -105,7 +105,7 @@ for n in "${n_values[@]}"; do
                       --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                       --m 2,2 --nb-instance-to-generate $nbInstGen \
                       --n-list $n --output-result /instances/N$n/4M_ --methods $method \
-                      --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
+                      --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
                       --beamSize $beamSize --alpha $alpha --recovering $reco --strategy $strategy --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                       --path-save-instance /instances/N$n/instances/
 
@@ -114,7 +114,7 @@ for n in "${n_values[@]}"; do
                       --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                       --m 5,5 --nb-instance-to-generate $nbInstGen \
                       --n-list $n --output-result /instances/N$n/10M_ --methods $method \
-                      --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
+                      --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_recoStrat_${strategy}_ \
                       --beamSize $beamSize --alpha $alpha --recovering $reco --strategy $strategy --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                       --path-save-instance /instances/N$n/instances/
                   fi
@@ -128,7 +128,7 @@ for n in "${n_values[@]}"; do
                   --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                   --m 1,1 --nb-instance-to-generate $nbInstGen \
                   --n-list $n --output-result /instances/N$n/2M_ --methods $method \
-                  --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                  --config-file-name-solve config_solve/config_solve_N${n}_M2_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                   --beamSize $beamSize --alpha $alpha --recovering $reco  --bestImproveLS $bestImprove --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                   --path-save-instance /instances/N$n/instances/
 
@@ -137,7 +137,7 @@ for n in "${n_values[@]}"; do
                   --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                   --m 2,2 --nb-instance-to-generate $nbInstGen \
                   --n-list $n --output-result /instances/N$n/4M_ --methods $method \
-                  --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                  --config-file-name-solve config_solve/config_solve_N${n}_M4_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                   --beamSize $beamSize --alpha $alpha --recovering $reco  --bestImproveLS $bestImprove --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                   --path-save-instance /instances/N$n/instances/
 
@@ -146,7 +146,7 @@ for n in "${n_values[@]}"; do
                   --frac-of-n "${frac_n[@]}" --timeLimit $timeLimit --timeLimitLS $timeLimitLS \
                   --m 5,5 --nb-instance-to-generate $nbInstGen \
                   --n-list $n --output-result /instances/N$n/10M_ --methods $method \
-                  --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
+                  --config-file-name-solve config_solve/config_solve_N${n}_M10_${method}_beamSize_${beamSize}_TimeRBS_${timeLimit}_TimeLimitLS_${$timeLimitLS}_alpha_${alpha}_reco_${reco}_nbSolutionForMSLS_${nbSolutionForMSLS}_autoSetting_${autoSetting}_versionLS_${versionLS}_bestImp_${bestImprove}_ \
                   --beamSize $beamSize --alpha $alpha --recovering $reco  --bestImproveLS $bestImprove --nbSolutionForMSLS $nbSolutionForMSLS --autoSetting $autoSetting \
                   --path-save-instance /instances/N$n/instances/
                 echo "Completed for method=$method, n=$n, reco=$reco,nbSolutionForMSLS=$nbSolutionForMSLS, and beam size=$beamSize"
