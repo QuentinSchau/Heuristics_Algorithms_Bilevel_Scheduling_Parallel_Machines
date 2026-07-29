@@ -405,7 +405,8 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
             }
             if (not foundBetterSol) break;
         }
-        if (isSmaller(bestUB,LB)) {
+        // if we have a better UB than LB and we have made a swap
+        if (isSmaller(bestUB,LB) && bestSwap.first != bestSwap.second) {
             // first update the solution if the UB is better than the global UB
             if (isSmaller(bestUB,globalUB)) {
                 this->solution->fromBlockStruct(bestBlockStructure);
@@ -429,14 +430,14 @@ inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
                 }
             }
             node.setBlockStructure(std::move(bestBlockStructure));
-#ifdef DEBUG_BaB
+            #ifdef DEBUG_BaB
             try {
                 check_recovering(node);
             }catch (BiSchException &e) {
                 Solution::printB(node.getBlockStruc());
                 throw BiSchException(e);
             }
-#endif
+            #endif
         }
     }
     NB_reco++;
