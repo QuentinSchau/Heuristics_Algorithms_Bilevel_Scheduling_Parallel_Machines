@@ -264,9 +264,6 @@ inline bool BeamSearch::findBestSolutionReachableFromPartialSolution(Solution::B
 
 inline void BeamSearch::recoveringLocalSearchV1(BeamSearchNode & BSnode){
     Node &node = BSnode.node;
-    if (node.id == 944) {
-         std::cout << "";
-    }
     isWithinTimeLimit();
     // Get the list of available job, i.e. job that have not been scheduled or removed, to compute upper bound
     listAvailableJobForNode.clear();
