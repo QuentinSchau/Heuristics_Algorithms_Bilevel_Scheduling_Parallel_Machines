@@ -34,11 +34,13 @@ def concatenate_csv_files(folder_path):
     pattern = re.compile(r"^(?:\d+M_|merged_)results(.+)\.csv$")
     files_by_method = {}
     for file in os.listdir(folder_path):
-        if file.endswith(".csv"):
-            match = pattern.match(file)
-            if match:
-                method = match.group(2)
-                files_by_method.setdefault(method, []).append(os.path.join(folder_path, file))
+        if not file.endswith(".csv"):
+            continue
+        match = pattern.match(file)
+        if match:
+            method = match.group(1)
+            file_path = os.path.join(folder_path,file)
+            files_by_method.setdefault(method,[]).append(file_path)
 
     concatenated_dataframes = {}
     for method, file_list in files_by_method.items():
