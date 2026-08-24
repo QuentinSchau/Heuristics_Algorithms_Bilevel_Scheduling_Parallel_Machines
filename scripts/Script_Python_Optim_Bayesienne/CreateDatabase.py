@@ -31,7 +31,7 @@ def concatenate_csv_files(folder_path):
     If only one method group exists, the output file is named 'resData.csv'; otherwise, each group is saved as 'resData_{method}.csv'.
     It returns a dictionary mapping each method to a tuple (concatenated DataFrame, output CSV file path).
     """
-    pattern = re.compile(r'^(\d+)M_results(.+)\.csv$')
+    pattern = re.compile(r"^(?:\d+M_|merged_)results(.+)\.csv$")
     files_by_method = {}
     for file in os.listdir(folder_path):
         if file.endswith(".csv"):

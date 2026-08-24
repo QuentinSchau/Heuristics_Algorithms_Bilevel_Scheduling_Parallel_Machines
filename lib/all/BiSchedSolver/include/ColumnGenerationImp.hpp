@@ -1613,7 +1613,7 @@ inline void ColumnGeneration::solve(Node &node) {
                 }
                 // if the diff UB - LB < 1 then we can stop the column generation
                 if (isSmaller(optValueRMP - lowerBound, 1)) {
-                    // since we are interested in the wj Uj value, which is an integer, then if UB - LB < 1 then we take LB = floor(UB)
+                    // since we are interested in the wj Uj value, which is an integer, then if UB - LB < 1 then we take LB = ceil(LB)
                     // where U is the value of weighted sum of tardy jobs of the restricted master problem. Here, we add epsilon to avoid floating representation error
                     lowerBound = std::ceil(lowerBound);
                     break;
