@@ -76,9 +76,6 @@ def Function(alpha1:float,alpha2:float,alpha3:float,alpha4:float,alpha5:float,al
     """!
     Compute the function value for a given set of learned values.
     """
-    print("Evaluate at : ",alpha1,alpha2,alpha3,alpha4,alpha5,alpha6,alpha7,alpha8)
-    
-
 
     # 0. For each repetition
     # ---------------------------------------------------------
@@ -128,7 +125,7 @@ def Function(alpha1:float,alpha2:float,alpha3:float,alpha4:float,alpha5:float,al
         # Now that all files/results are generated, we calculate the score.
         for nb_jobs in nb_jobs_steps:
             improvement += Compute_Improvement(nb_jobs)
-                
+    print("Evaluate at : ",alpha1,alpha2,alpha3,alpha4,alpha5,alpha6,alpha7,alpha8, " with value ",improvement / Algorithm.ALGRepetitions)
     return improvement / Algorithm.ALGRepetitions
 
 
