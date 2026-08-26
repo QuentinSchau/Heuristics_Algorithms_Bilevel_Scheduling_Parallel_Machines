@@ -128,6 +128,17 @@ def main(args):
             file.write(json.dumps(configGenerate))
         print(f"Generated config files:\n- {configPath}")
 
+    def clip(x,a,b):
+        return min(max(a,x),b)
+
+    def norm(x,min_x,max_x):
+        return (x-min_x)/(max_x-min_x)
+
+    def w(N,m,alpha1,alpha2,alpha3,alpha4):
+        return clip(math.floor(math.exp(alpha1*norm(N,40,100)+alpha2)+alpha3*norm(m,2,10))+alpha4,1,100)
+    def alpha(N,n,m,alpha5,alpha6,alpha7,alpha8):
+        return clip(alpha5*norm(N,40,100)+alpha6*norm(n,10,75)+alpha7*norm(m,2,10)+alpha8,0.0,1.0)
+
     """
     Generate solver config file 
     """
@@ -160,18 +171,13 @@ def main(args):
                     elif method == "BeamSearch":
                         m = (mMax + M0)
                         # Normalization on [0,1]
-                        N_tilde = (N - 40) / (100 - 40)
-                        n_tilde = (n - 10) / (75 - 10)
-                        m_tilde = (m - 2) / (10 - 2)
 
-                        W_raw = math.floor(math.exp(-1.36890 * N_tilde + 0.92932) + 1.38553 * m_tilde) + 3 if nbSolutionForMSLS > 0 else math.floor(math.exp(-1.15969 * N_tilde + -1.65353) + -10.0 * m_tilde) + 5
-                        W = min(max(W_raw, 1), 100)
+                        W = w(N, m, -1.94010, 2.55139, -7.58156, 3) if nbSolutionForMSLS > 0 else w(N,m,-2.52765,3.03010,-1.38515,0.0)
                         # If W must be an integer
                         W = int(round(W))
-                        alpha_raw = -1.0 * N_tilde + -1.0 * n_tilde + m_tilde + 1.0
-                        alpha = min(max(alpha_raw, 0.0), 1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
-                        TLS = math.ceil( 0.328*timeLimit)
-                        K = 1459
+                        alpha = alpha(N, n,m,1.0,-1.0,-1.0,-1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
+                        TLS = math.ceil( 0.524*timeLimit)
+                        K = 989
                         configSolve["solve"]["methods"].append({
                             "name": "BeamSearch",
                             "verbose": verbose,
