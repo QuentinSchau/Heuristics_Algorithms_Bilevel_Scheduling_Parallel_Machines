@@ -136,7 +136,7 @@ def main(args):
 
     def w(N,m,alpha1,alpha2,alpha3,alpha4):
         return clip(math.floor(math.exp(alpha1*norm(N,40,100)+alpha2)+alpha3*norm(m,2,10))+alpha4,1,100)
-    def alpha(N,n,m,alpha5,alpha6,alpha7,alpha8):
+    def a(N,n,m,alpha5,alpha6,alpha7,alpha8):
         return clip(alpha5*norm(N,40,100)+alpha6*norm(n,10,75)+alpha7*norm(m,2,10)+alpha8,0.0,1.0)
 
     """
@@ -175,7 +175,7 @@ def main(args):
                         W = w(N, m, -1.94010, 2.55139, -7.58156, 3) if nbSolutionForMSLS > 0 else w(N,m,-2.52765,3.03010,-1.38515,0.0)
                         # If W must be an integer
                         W = int(round(W))
-                        alpha = alpha(N, n,m,1.0,-1.0,-1.0,-1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
+                        alpha = a(N, n,m,1.0,-1.0,-1.0,-1.0) if (autoSetting and nbSolutionForMSLS==0) else alpha
                         TLS = math.ceil( 0.524*timeLimit)
                         K = 989
                         configSolve["solve"]["methods"].append({
