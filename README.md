@@ -250,8 +250,15 @@ The main contributor is Quentin SCHAU. If you want to contribute to this project
 
 ## Authors and acknowledgment
 
-This code implements the problem and exact algorithm defined in several communication : 
+This code implements the problem and heuristic algorithms defined in several communication :
 
+<u>Article:</u>
+
+<u>Communications:</u>
+
+[2] Quentin Schau, Federico Della Croce, Olivier Ploton, Vincent T'kindt. Heuristic approaches for solving a bilevel parallel machine scheduling problem. 20th International Workshop on Project Management and Scheduling (PMS), LAAS-CNRS, Apr 2026, Toulouse, France.
+
+[1] Quentin Schau, Federico Della Croce, Olivier Ploton, Vincent T'kindt. Heuristics approaches for solving a bilevel parallel machine scheduling problem. ROADEF 2026, Laboratoire d'Informatique Fondamentale et Appliquée de Tours (LIFAT); Université de Tours, Feb 2026, Tours, France.
 ## License
 This project is under GPU Licence. 
 
